@@ -118,6 +118,17 @@ section{margin-bottom:28px}
 .mgr .mc{color:var(--text-2);font-size:12.5px}
 .mi{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--surface);font-size:13px;width:150px}
 @media (max-width:640px){.ul .hm{display:none}.ul td,.ul th{padding:9px 8px}.ul .pn{min-width:0}}
+/* attachments */
+.att{display:flex;flex-direction:column;gap:6px}
+.af{display:flex;align-items:center;gap:10px;border:1px solid var(--line-2);border-radius:8px;padding:7px 10px;font-size:13px}
+.ai{flex:none;font-size:10px;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:3px 5px;min-width:34px;text-align:center}
+.an{flex:1;min-width:0;color:var(--text);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.an:hover{color:var(--accent);text-decoration:underline}
+.as{flex:none;color:var(--text-3);font-size:12px}
+.addf{align-self:flex-start;cursor:pointer}
+.attg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.attg h5{margin:0 0 6px;font-size:12.5px;color:var(--text-2)}
+@media (max-width:560px){.attg{grid-template-columns:1fr}.as{display:none}}
 /* timeline */
 .tl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow-x:auto}
 .tl-in{min-width:760px;position:relative;--lab:220px}
@@ -361,6 +372,42 @@ async function poll(){
 setInterval(poll,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
 function save(){data.updatedAt=today();stamp();ls.set(LS,JSON.stringify(data));render();schedule()}
+const ATT=[['netform','넷폼 관련 자료'],['xtrans','엑스트란스 견적서']];
+const fsize=n=>n>1048576?(n/1048576).toFixed(1)+'MB':Math.max(1,Math.round(n/1024))+'KB';
+const fileUrl=f=>`https://github.com/${GH.owner}/${GH.repo}/raw/${GH.branch}/${f.path.split('/').map(encodeURIComponent).join('/')}`;
+function abToB64(buf){const b=new Uint8Array(buf);let x='';for(let i=0;i<b.length;i+=0x8000)x+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(x)}
+async function uploadFile(pid,kind,file){
+  if(!token())throw new Error('깃허브 연결 후 첨부할 수 있습니다');
+  if(file.size>40*1048576)throw new Error(file.name+': 40MB 이하 파일만 올릴 수 있습니다');
+  const d=new Date(),ts=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0');
+  const safe=file.name.replace(/[\\/:*?"<>|#%]+/g,'_').replace(/\s+/g,' ').trim()||'file';
+  const path=`files/${pid}/${kind}/${ts}_${safe}`;
+  const r=await fetch(`${API}/contents/${path.split('/').map(encodeURIComponent).join('/')}`,{method:'PUT',headers:hdr({'Content-Type':'application/json'}),
+    body:JSON.stringify({message:'첨부 추가 · '+safe,content:abToB64(await file.arrayBuffer()),branch:GH.branch})});
+  if(!r.ok)throw new Error(file.name+': 업로드 실패 ('+r.status+')');
+  const j=await r.json();
+  return {name:file.name,path,size:file.size,at:today(),sha:j.content.sha};
+}
+async function removeFile(f){
+  if(!token()||!f.sha)return;
+  try{await fetch(`${API}/contents/${f.path.split('/').map(encodeURIComponent).join('/')}`,{method:'DELETE',headers:hdr({'Content-Type':'application/json'}),body:JSON.stringify({message:'첨부 삭제 · '+f.name,sha:f.sha,branch:GH.branch})})}catch(e){}
+}
+function attList(p,kind,editable){
+  const L=((p.files||{})[kind])||[];
+  return `<div class="att" data-kind="${kind}">${L.length?L.map((f,i)=>`<div class="af"><span class="ai">${esc((f.name.split('.').pop()||'').slice(0,4).toUpperCase())}</span><a href="${esc(fileUrl(f))}" target="_blank" rel="noopener" class="an">${esc(f.name)}</a><span class="as">${fsize(f.size)} · ${esc(f.at)}</span>${editable?`<button type="button" class="btn sm ghost" data-arm="${kind}:${i}" aria-label="삭제">✕</button>`:''}</div>`).join(''):'<div class="hint">첨부된 파일이 없습니다.</div>'}
+  <label class="addf"><input type="file" multiple data-up="${kind}" hidden><span class="btn sm">+ 파일 첨부</span></label><span class="hint up-msg"></span></div>`;
+}
+async function handleUpload(input,p,onDone){
+  const kind=input.dataset.up, files=[...input.files]; input.value=''; if(!files.length)return;
+  const msg=input.closest('.att').querySelector('.up-msg');
+  if(!token()){msg.textContent='먼저 오른쪽 위 깃허브 연결을 해주세요.';return}
+  p.files=p.files||{}; p.files[kind]=p.files[kind]||[];
+  for(const [i,f] of files.entries()){
+    msg.textContent=`업로드 중… (${i+1}/${files.length}) ${f.name}`;
+    try{p.files[kind].push(await uploadFile(p.id,kind,f))}catch(e){toast(e.message)}
+  }
+  msg.textContent=''; onDone();
+}
 function openGh(){
   const has=!!token();
   $('#mbox').innerHTML=`<div class="mh"><h3>깃허브 자동 저장 연결</h3><button class="btn sm ghost" style="margin-left:auto" data-mclose>✕</button></div>
@@ -443,7 +490,7 @@ function card(p){
       <div class="head">${thumb(p)}<div style="flex:1;min-width:0"><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}</div></div>${dday(p)}</div>
       <dl class="facts">${fx.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${lc?`<div class="lastc"><b>${esc(lc.date)}</b>${esc(lc.text)}</div>`:''}
-      <div class="foot"><span>체크 ${d}/${c.length}</span><div class="prog"><i style="width:${c.length?d/c.length*100:0}%"></i></div><span>${esc(p.start||'')}${p.end?' → '+esc(p.end):''}</span></div>
+      <div class="foot">${(()=>{const n=ATT.reduce((a,[k])=>a+(((p.files||{})[k])||[]).length,0);return n?`<span title="첨부 파일">첨부 ${n}</span>`:''})()}<span>체크 ${d}/${c.length}</span><div class="prog"><i style="width:${c.length?d/c.length*100:0}%"></i></div><span>${esc(p.start||'')}${p.end?' → '+esc(p.end):''}</span></div>
     </article>`}
 function renderCards(){
   const L=filtered();
@@ -492,10 +539,11 @@ function openDrawer(id,silent){
   const p=data.projects.find(x=>x.id===id); if(!p){closeDrawer();return}
   openId=id; const i=p.info||{};
   const kv=INFO_KEYS.filter(k=>k in i).concat(Object.keys(i).filter(k=>!INFO_KEYS.includes(k)));
-  $('#drawer').innerHTML=`<div class="dh">${thumb(p)}<div style="min-width:0"><div class="brand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}<span class="b">${esc(p.route||'')}</span></div></div>
+  $('#drawer').innerHTML=`<div class="dh">${thumb(p)}<div style="min-width:0"><div class="brand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}${p.route?`<span class="b">${esc(p.route)}</span>`:''}</div></div>
     <div class="x" style="display:flex;gap:6px"><button class="btn sm" data-edit="${esc(p.id)}">수정</button><button class="btn sm ghost" id="dClose" aria-label="닫기">✕</button></div></div>
     <div class="db">
       <div class="blk"><h4>일정 · 브랜드 담당자</h4><table class="kv"><tr><th>일정</th><td>${dday(p)} <span style="margin-left:6px">${esc(p.start||'-')} → ${esc(p.end||'-')}</span></td></tr><tr><th>브랜드 담당자</th><td class="${mgr(p).manager?'':'miss'}">${esc(mgr(p).manager||'미지정')}${mgr(p).contact?' · '+esc(mgr(p).contact):''}</td></tr></table></div>
+      <div class="blk"><h4>첨부 파일</h4><div class="attg" id="drAtt">${ATT.map(([k,l])=>`<div><h5>${l}</h5>${attList(p,k,true)}</div>`).join('')}</div></div>
       <div class="blk"><h4>필수 정보</h4><table class="kv">${kv.map(k=>`<tr><th>${esc(k)}</th><td class="${isMiss(i[k])?'miss':''}">${esc(i[k]||'미입력')}</td></tr>`).join('')}</table></div>
       <div class="blk"><h4>픽업 주소</h4><div class="addr"><span class="lg">KR</span><span class="tx">${esc(p.pickup||'미입력')}</span>${p.pickup?`<button class="btn sm" data-copy="${esc(p.pickup)}">복사</button>`:''}</div></div>
       <div class="blk"><h4>배송지 주소</h4>${Object.entries(p.delivery||{}).map(([k,v])=>`<div class="addr"><span class="lg">${esc(k)}</span><span class="tx">${esc(v)}</span><button class="btn sm" data-copy="${esc(v)}">복사</button></div>`).join('')||'<div class="hint">미입력</div>'}</div>
@@ -523,6 +571,7 @@ function openForm(id){
       ${inp('start','시작일',p.start,'date')}${inp('end','마감일 (급한 순 정렬 기준)',p.end,'date')}
       <label class="f full">제품 이미지 <input name="image" value="${esc(p.image&&!p.image.startsWith('data:')?p.image:'')}" placeholder="이미지 주소 또는 저장소 경로 (예: images/pour.jpg)"><span class="hint">또는 파일 선택: <input type="file" accept="image/*" id="imgFile"> ${p.image?'· 현재 이미지 있음':''}</span></label>
     </div></div>
+    <div class="fs"><h4>첨부 파일</h4><div class="attg" id="formAtt"></div>${token()?'':'<div class="hint" style="margin-top:6px">파일 첨부는 오른쪽 위 <b>깃허브 연결</b> 후에 할 수 있습니다.</div>'}</div>
     <div class="fs"><h4>필수 정보</h4><div class="fg">${INFO_KEYS.map(k=>inp('info:'+k,k,(p.info||{})[k]||'')).join('')}</div></div>
     <div class="fs"><h4>주소</h4><div class="fg">
       <label class="f full">픽업 주소<textarea name="pickup">${esc(p.pickup)}</textarea></label>
@@ -533,6 +582,10 @@ function openForm(id){
   <div class="mf"><button class="btn" data-mclose>취소</button><button class="btn primary" id="pfSave">저장</button></div>`;
   $('#modal').classList.add('on');
   let imgData=null;
+  const paintAtt=()=>{$('#formAtt').innerHTML=ATT.map(([k,l])=>`<div><h5>${l}</h5>${attList(p,k,true)}</div>`).join('')};
+  paintAtt();
+  $('#formAtt').onchange=e=>{if(e.target.dataset.up)handleUpload(e.target,p,paintAtt)};
+  $('#formAtt').onclick=e=>{const b=e.target.closest('[data-arm]');if(!b)return;const[k,i]=b.dataset.arm.split(':');const f=p.files[k][+i];if(!confirm(f.name+' 첨부를 삭제할까요?'))return;p.files[k].splice(+i,1);removeFile(f);paintAtt()};
   $('#imgFile').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,640/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);imgData=c.toDataURL('image/jpeg',.82);toast('이미지를 불러왔습니다')};im.onerror=()=>toast('이미지를 읽지 못했습니다');im.src=r.result};r.readAsDataURL(fl)};
   $('#pfSave').onclick=()=>{
     const fd=new FormData($('#pf'));
@@ -570,7 +623,9 @@ document.addEventListener('click',e=>{
   else if(c.hasAttribute('data-mclose'))$('#modal').classList.remove('on');
 });
 $('#drawer').addEventListener('change',e=>{if(e.target.dataset.chk!==undefined){const p=data.projects.find(x=>x.id===openId);p.checks[+e.target.dataset.chk].done=e.target.checked;save()}});
+$('#drawer').addEventListener('change',e=>{if(!e.target.dataset.up)return;const p=data.projects.find(x=>x.id===openId);if(p)handleUpload(e.target,p,()=>{save();toast('첨부했습니다')})});
 $('#drawer').addEventListener('click',e=>{
+  const ab=e.target.closest('[data-arm]');if(ab){const p=data.projects.find(x=>x.id===openId);const[k,i]=ab.dataset.arm.split(':');const f=p.files[k][+i];if(confirm(f.name+' 첨부를 삭제할까요?')){p.files[k].splice(+i,1);removeFile(f);save()}return}
   const p=data.projects.find(x=>x.id===openId); if(!p)return;
   if(e.target.id==='dClose')closeDrawer();
   if(e.target.id==='addChk'){const v=$('#newChk').value.trim();if(v){(p.checks=p.checks||[]).push({text:v,done:false});save()}}
