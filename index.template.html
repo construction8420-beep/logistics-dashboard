@@ -48,6 +48,13 @@ h1{font-size:22px;margin:0;letter-spacing:-.02em}
 .btn.sm{padding:5px 9px;font-size:12px}
 .banner{display:none;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:13px;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .banner.on{display:flex}
+.sync{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--text-2);display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--text-3)}
+.sync.ok::before{background:var(--exp)} .sync.saving::before{background:var(--accent)} .sync.local::before{background:var(--warn)} .sync.err::before{background:var(--danger)}
+.sync.err{color:var(--danger)}
+.steps{margin:6px 0 0;padding-left:20px;font-size:13.5px;line-height:1.7}
+.steps b{font-weight:650}
+.note{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text-2);margin-top:12px}
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
 .kpi .l{color:var(--text-3);font-size:12px;font-weight:500}
@@ -198,17 +205,19 @@ label.f textarea{min-height:60px;resize:vertical}
       <div class="sub" id="upd"></div>
     </div>
     <div class="actions">
+      <button class="sync" id="sync" title="깃허브 저장 상태"></button>
       <button class="btn primary" id="bNew">+ 프로젝트 추가</button>
-      <button class="btn" id="bExport" title="수정한 내용을 data.json으로 저장">data.json 내보내기</button>
-      <button class="btn" id="bImport">불러오기</button>
+      <button class="btn" id="bGh">깃허브 연결</button>
+      <button class="btn ghost" id="bExport" title="현재 내용을 data.json 파일로 받기">백업</button>
+      <button class="btn ghost" id="bImport" title="data.json 파일을 불러와 합치기">불러오기</button>
       <button class="btn ghost" id="bTheme" title="밝게/어둡게 전환">테마</button>
       <input type="file" id="fImport" accept=".json,application/json" hidden>
     </div>
   </header>
 
   <div class="banner" id="banner">
-    <span>이 브라우저에서 수정한 내용이 있습니다. 팀과 공유하려면 <b>data.json 내보내기</b> 후 깃허브 저장소에 올려주세요.</span>
-    <span style="display:flex;gap:6px"><button class="btn sm" id="bExport2">data.json 내보내기</button><button class="btn sm ghost" id="bReset">서버 버전으로 되돌리기</button></span>
+    <span id="bannerT"></span>
+    <span style="display:flex;gap:6px"><button class="btn sm" id="bGh2">깃허브 연결</button></span>
   </div>
 
   <div class="kpis" id="kpis"></div>
@@ -262,14 +271,127 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth
 let server=null, data=null, f={region:'ALL',dir:'ALL',brand:'ALL',q:''}, openId=null;
 
 function seed(){try{return JSON.parse($('#seed').textContent)}catch(e){return {projects:[]}}}
-async function load(){
-  server=seed();
-  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(r.ok) server=await r.json();}catch(e){}
-  const loc=ls.get(LS);
-  data=loc?JSON.parse(loc):structuredClone(server);
-  render();
+const GH={owner:'construction8420-beep',repo:'logistics-dashboard',branch:'main',path:'data.json'};
+const TK='wbs-gh-token', API=`https://api.github.com/repos/${GH.owner}/${GH.repo}`;
+let base=null, sha=null, saving=false, pending=false, timer=null, sync={st:'',at:null,msg:''};
+const token=()=>ls.get(TK)||'';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const b64e=str=>{const b=new TextEncoder().encode(str);let x='';for(let i=0;i<b.length;i+=0x8000)x+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(x)};
+const b64d=str=>new TextDecoder().decode(Uint8Array.from(atob(str.replace(/\s/g,'')),c=>c.charCodeAt(0)));
+function hdr(extra){const h={Accept:'application/vnd.github+json'};const t=token();if(t)h.Authorization='Bearer '+t;return Object.assign(h,extra||{})}
+async function ghGet(){
+  const u=`${API}/contents/${GH.path}?ref=${GH.branch}`;
+  const r=await fetch(u+'&t='+Date.now(),{headers:hdr(),cache:'no-store'});
+  if(!r.ok){const e=new Error('불러오기 실패 ('+r.status+')');e.status=r.status;throw e}
+  const j=await r.json(); let txt=j.content?b64d(j.content):'';
+  if(!txt){const r2=await fetch(u+'&t='+Date.now(),{headers:hdr({Accept:'application/vnd.github.raw+json'}),cache:'no-store'});txt=await r2.text()}
+  return {sha:j.sha,data:JSON.parse(txt)};
 }
-function save(){data.updatedAt=today(); ls.set(LS,JSON.stringify(data)); render();}
+async function ghPut(d,s){
+  const r=await fetch(`${API}/contents/${GH.path}`,{method:'PUT',headers:hdr({'Content-Type':'application/json'}),
+    body:JSON.stringify({message:'대시보드 수정 · '+new Date().toLocaleString('ko-KR'),content:b64e(JSON.stringify(d,null,2)),sha:s||undefined,branch:GH.branch})});
+  if(r.status===409||(r.status===422&&s))return {conflict:true};
+  if(!r.ok){const e=new Error('저장 실패 ('+r.status+')');e.status=r.status;throw e}
+  return {sha:(await r.json()).content.sha};
+}
+function norm(d){d=d||{};d.projects=d.projects||[];d.brands=d.brands||{};d.deleted=d.deleted||{};return d}
+function merge(r,l){
+  r=norm(clone(r));l=norm(clone(l));
+  const del=Object.assign({},r.deleted);for(const[k,v] of Object.entries(l.deleted))del[k]=Math.max(del[k]||0,v);
+  const m=new Map();[...r.projects,...l.projects].forEach(p=>{const o=m.get(p.id);if(!o||(p.updatedAt||0)>(o.updatedAt||0))m.set(p.id,p)});
+  const br=Object.assign({},r.brands);for(const[k,v] of Object.entries(l.brands))if(!br[k]||(v.updatedAt||0)>(br[k].updatedAt||0))br[k]=v;
+  for(const k of Object.keys(br))if(br[k]._del)delete br[k];
+  return {updatedAt:[r.updatedAt,l.updatedAt].filter(Boolean).sort().pop()||today(),projects:[...m.values()].filter(p=>!((del[p.id]||0)>(p.updatedAt||0))),brands:br,deleted:del};
+}
+function stamp(){
+  const now=Date.now(), b=norm(clone(base||{})); norm(data);
+  const key=o=>{const c=Object.assign({},o);delete c.updatedAt;return JSON.stringify(c)};
+  const bm=new Map(b.projects.map(p=>[p.id,key(p)]));
+  data.projects.forEach(p=>{if(bm.get(p.id)!==key(p))p.updatedAt=now});
+  b.projects.forEach(p=>{if(!data.projects.some(x=>x.id===p.id))data.deleted[p.id]=now});
+  for(const[k,v] of Object.entries(data.brands))if(!b.brands[k]||key(b.brands[k])!==key(v))v.updatedAt=now;
+}
+function setSync(st,msg){sync.st=st;sync.msg=msg||'';if(st==='ok')sync.at=new Date();paintSync()}
+function paintSync(){
+  const el=$('#sync'); if(!el)return;
+  const t=sync.at?sync.at.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}):'';
+  const txt={ok:'깃허브에 저장됨'+(t?' · '+t:''),saving:'저장 중…',local:'이 브라우저에만 저장됨',view:'보기 전용',err:sync.msg||'저장 실패',load:'불러오는 중…'}[sync.st]||'';
+  el.className='sync '+sync.st; el.textContent=txt;
+  const conn=!!token();
+  $('#bGh').textContent=conn?'깃허브 연결됨':'깃허브 연결';
+  const showB=!conn&&localDirty();
+  $('#banner').classList.toggle('on',showB);
+  if(showB)$('#bannerT').innerHTML='이 브라우저에서 적은 내용이 아직 팀과 공유되지 않았습니다. <b>깃허브 연결</b>을 한 번 해두면 이후로는 적는 즉시 자동 저장됩니다.';
+}
+function localDirty(){const l=ls.get(LS);if(!l||!base)return false;try{const a=JSON.parse(l);return JSON.stringify(merge(base,a).projects)!==JSON.stringify(norm(clone(base)).projects)||JSON.stringify(merge(base,a).brands)!==JSON.stringify(norm(clone(base)).brands)}catch(e){return false}}
+async function load(){
+  setSync('load');
+  let remote=null;
+  try{const g=await ghGet();remote=g.data;sha=g.sha}catch(e){
+    try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(r.ok)remote=await r.json()}catch(_){}
+    if(!remote)remote=seed();
+  }
+  base=norm(remote); server=base;
+  const loc=ls.get(LS);
+  data=loc?merge(base,JSON.parse(loc)):clone(base);
+  render();
+  if(token()&&JSON.stringify(data)!==JSON.stringify(base))schedule(0);
+  else setSync(token()?'ok':(localDirty()?'local':'view'));
+}
+function schedule(ms){if(!token()){setSync('local');return}clearTimeout(timer);setSync('saving');timer=setTimeout(()=>{timer=null;push()},ms??1200)}
+async function push(){
+  if(saving){pending=true;return}
+  saving=true;setSync('saving');
+  try{
+    if(!sha){try{const g=await ghGet();sha=g.sha;data=merge(g.data,data)}catch(e){if(e.status!==404)throw e}}
+    let res=await ghPut(data,sha);
+    if(res.conflict){const g=await ghGet();data=merge(g.data,data);res=await ghPut(data,g.sha);if(res.conflict)throw new Error('동시에 수정됨 – 잠시 후 다시 시도')}
+    sha=res.sha;base=clone(data);server=base;ls.set(LS,JSON.stringify(data));setSync('ok');render();
+  }catch(e){
+    setSync('err',(e.status===401||e.status===403||e.status===404)?'깃허브 권한 확인 필요':(e.message||'저장 실패'));
+  }finally{saving=false;if(pending){pending=false;push()}}
+}
+async function poll(){
+  if(saving||timer||document.hidden||$('#modal').classList.contains('on')||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
+  try{const g=await ghGet();if(g.sha===sha)return;
+    sha=g.sha;const merged=merge(g.data,data);base=norm(g.data);server=base;data=merged;ls.set(LS,JSON.stringify(data));render();
+    if(token()&&JSON.stringify(merged)!==JSON.stringify(base))schedule(0);else if(token())setSync('ok');
+  }catch(e){}
+}
+setInterval(poll,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
+function save(){data.updatedAt=today();stamp();ls.set(LS,JSON.stringify(data));render();schedule()}
+function openGh(){
+  const has=!!token();
+  $('#mbox').innerHTML=`<div class="mh"><h3>깃허브 자동 저장 연결</h3><button class="btn sm ghost" style="margin-left:auto" data-mclose>✕</button></div>
+  <div class="mb">
+    <p style="margin:14px 0 4px;font-size:13.5px">한 번만 연결해 두면, 이 브라우저에서 적는 내용이 바로 깃허브에 저장되고 팀원 화면에도 1분 안에 반영됩니다.</p>
+    <ol class="steps">
+      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">깃허브 토큰 만들기 페이지</a>를 엽니다.</li>
+      <li><b>Token name</b>에 "대시보드"를 적고, <b>Expiration</b>은 원하는 기간으로 고릅니다.</li>
+      <li><b>Repository access</b>에서 <b>Only select repositories</b> → <b>logistics-dashboard</b>를 고릅니다.</li>
+      <li><b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b>를 <b>Read and write</b>로 바꿉니다.</li>
+      <li>맨 아래 <b>Generate token</b>을 누르고, 나온 토큰(github_pat_로 시작)을 복사해 아래에 붙여 넣습니다.</li>
+    </ol>
+    <label class="f" style="margin-top:14px">깃허브 토큰<input id="ghTok" type="password" autocomplete="off" placeholder="${has?'연결되어 있음 · 바꾸려면 새 토큰 입력':'github_pat_...'}"></label>
+    <div class="note">토큰은 이 브라우저에만 보관되고 다른 곳으로 보내지지 않습니다. 다른 사람과 공유하지 마세요. 팀원은 저장소 <b>Settings → Collaborators</b>에서 초대받은 뒤 각자 토큰을 만들어 연결하면 됩니다.</div>
+    <div class="hint" id="ghMsg" style="margin-top:8px"></div>
+  </div>
+  <div class="mf">${has?'<button class="btn ghost" id="ghOff" style="margin-right:auto;color:var(--danger)">연결 해제</button>':''}<button class="btn" data-mclose>닫기</button><button class="btn primary" id="ghSave">연결</button></div>`;
+  $('#modal').classList.add('on');
+  $('#ghSave').onclick=async()=>{
+    const t=$('#ghTok').value.trim(); if(!t){$('#ghMsg').textContent='토큰을 붙여 넣어 주세요.';return}
+    $('#ghMsg').textContent='확인 중…';
+    try{const r=await fetch(API,{headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+t}});
+      const j=r.ok?await r.json():null;
+      if(!j||!(j.permissions&&j.permissions.push)){$('#ghMsg').textContent='이 토큰으로는 저장소에 쓸 수 없습니다. 3·4번(저장소 선택, Contents: Read and write)을 확인해 주세요.';return}
+      ls.set(TK,t);$('#modal').classList.remove('on');toast('깃허브에 연결했습니다. 적어둔 내용을 저장합니다');
+      try{const g=await ghGet();sha=g.sha;base=norm(g.data);data=merge(g.data,data)}catch(e){}
+      render();schedule(0);
+    }catch(e){$('#ghMsg').textContent='연결 확인에 실패했습니다. 인터넷 연결을 확인해 주세요.'}
+  };
+  if(has)$('#ghOff').onclick=()=>{ls.del(TK);$('#modal').classList.remove('on');setSync(localDirty()?'local':'view');toast('연결을 해제했습니다')};
+}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1800)}
 const isMiss=v=>!v||/미정|확인 필요|첨부 예정/.test(v);
 
@@ -293,7 +415,7 @@ function dday(p){
 }
 function render(){
   $('#upd').textContent='마지막 수정 '+(data.updatedAt||'-')+' · 브랜드별 수입·수출 일정 현황';
-  $('#banner').classList.toggle('on',!!ls.get(LS)&&JSON.stringify(data)!==JSON.stringify(server));
+  paintSync();
   renderKpi(); renderFilters(); renderCards(); renderTl(); renderWbs();
   if(openId) openDrawer(openId,true);
 }
@@ -343,7 +465,7 @@ function editMgr(n){
   const m=(data.brands||{})[n]||{};
   box.innerHTML=`<span class="ml">담당자</span><input class="mi" id="mN" placeholder="이름" value="${esc(m.manager||'')}"><input class="mi" id="mC" placeholder="연락처·이메일 (선택)" value="${esc(m.contact||'')}"><button class="btn sm primary" id="mS">저장</button><button class="btn sm ghost" id="mX">취소</button>`;
   $('#mN').focus();
-  const sv=()=>{data.brands=data.brands||{};const v={manager:$('#mN').value.trim(),contact:$('#mC').value.trim()};if(v.manager||v.contact)data.brands[n]=v;else delete data.brands[n];save();toast('담당자를 저장했습니다')};
+  const sv=()=>{data.brands=data.brands||{};const v={manager:$('#mN').value.trim(),contact:$('#mC').value.trim()};if(v.manager||v.contact)data.brands[n]=v;else if(data.brands[n])data.brands[n]={manager:'',contact:''};save();toast('담당자를 저장했습니다')};
   $('#mS').onclick=sv;$('#mX').onclick=()=>render();
   box.onkeydown=e=>{if(e.key==='Enter')sv();if(e.key==='Escape')render()};
 }
@@ -411,7 +533,7 @@ function openForm(id){
   <div class="mf"><button class="btn" data-mclose>취소</button><button class="btn primary" id="pfSave">저장</button></div>`;
   $('#modal').classList.add('on');
   let imgData=null;
-  $('#imgFile').onchange=e=>{const fl=e.target.files[0];if(!fl)return;if(fl.size>1.5e6)toast('1.5MB 이하 이미지를 권장합니다');const r=new FileReader();r.onload=()=>{imgData=r.result;toast('이미지를 불러왔습니다')};r.readAsDataURL(fl)};
+  $('#imgFile').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,640/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);imgData=c.toDataURL('image/jpeg',.82);toast('이미지를 불러왔습니다')};im.onerror=()=>toast('이미지를 읽지 못했습니다');im.src=r.result};r.readAsDataURL(fl)};
   $('#pfSave').onclick=()=>{
     const fd=new FormData($('#pf'));
     const g=k=>(fd.get(k)||'').toString().trim();
@@ -430,7 +552,7 @@ function openForm(id){
 function exportJson(){
   const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='data.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  toast('data.json을 저장소에 덮어써서 올리면 팀 전체에 반영됩니다');
+  toast('백업 파일을 받았습니다');
 }
 
 document.addEventListener('click',e=>{
@@ -457,10 +579,9 @@ $('#drawer').addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('on');closeDrawer()} if(e.key==='Enter'&&e.target.classList?.contains('card'))openDrawer(e.target.dataset.id)});
 $('#q').oninput=e=>{f.q=e.target.value;renderCards();renderTl()};
 $('#bNew').onclick=()=>openForm(null);
-$('#bExport').onclick=exportJson; $('#bExport2').onclick=exportJson;
+$('#bExport').onclick=exportJson; $('#bGh').onclick=openGh; $('#bGh2').onclick=openGh; $('#sync').onclick=()=>{if(sync.st==='err')push();else if(!token())openGh()};
 $('#bImport').onclick=()=>$('#fImport').click();
-$('#fImport').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.projects))throw 0;data=d;save();toast('불러왔습니다')}catch(_){toast('올바른 data.json 파일이 아닙니다')}};r.readAsText(fl);e.target.value=''};
-$('#bReset').onclick=()=>{if(confirm('이 브라우저의 수정 내용을 지우고 저장소 버전으로 되돌릴까요?')){ls.del(LS);data=structuredClone(server);render();toast('되돌렸습니다')}};
+$('#fImport').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.projects))throw 0;data=merge(data,d);save();toast('불러와서 합쳤습니다')}catch(_){toast('올바른 data.json 파일이 아닙니다')}};r.readAsText(fl);e.target.value=''};
 const th=ls.get(TH); if(th)document.documentElement.dataset.theme=th;
 $('#bTheme').onclick=()=>{const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;const n=dark?'light':'dark';document.documentElement.dataset.theme=n;ls.set(TH,n)};
 load();
