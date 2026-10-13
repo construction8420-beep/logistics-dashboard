@@ -107,9 +107,10 @@ section{margin-bottom:28px}
 .col{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow)}
 .col h3{font-size:13.5px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
 .col h3 .code{font-size:11px;font-weight:700;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--text-2)}
-.todo{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--line-2);font-size:13px}
+.todo{display:flex;gap:8px;padding:9px 0;cursor:pointer;border-top:1px solid var(--line-2);font-size:13px}
 .todo:first-of-type{border-top:0}
 .todo .id{color:var(--text-3);font-variant-numeric:tabular-nums;flex:none;width:26px}
+.todo:hover b{color:var(--accent)}
 .todo .t{flex:1}
 .todo .n{display:block;color:var(--accent);font-size:12px;margin-top:2px;cursor:text}
 .todo .n.ph{color:var(--text-3)}
@@ -207,7 +208,7 @@ label.f textarea{min-height:60px;resize:vertical}
   </section>
 
   <section>
-    <div class="sh"><h2>지역별 업무 (WBS)</h2><span class="c">메모를 눌러 바로 수정</span></div>
+    <div class="sh"><h2>지역별 업무</h2><span class="c">프로젝트의 지역 값으로 자동 분류</span></div>
     <div class="wbs" id="wbs"></div>
   </section>
 </div>
@@ -217,7 +218,7 @@ label.f textarea{min-height:60px;resize:vertical}
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <div class="toast" id="toast"></div>
 
-<script id="seed" type="application/json">{"updatedAt": "2026-10-13", "projects": [{"id": "p-pour-cn-2610", "region": "CN", "brand": "POUR", "name": "POUR 코트재 중국 수출 (선전·포산 창고 입고)", "direction": "수출", "route": "한국 → 중국", "status": "견적 요청", "owner": "", "image": "", "start": "2026-10-13", "end": "2026-10-20", "info": {"선적항 (POL)": "해상: 부산항 / 항공: 인천공항", "도착항 (POD)": "중국 선전항 (深圳港, Shenzhen)", "품목": "POUR 코트재 (수성 코팅제, Water-based Coating)", "HS 코드": "3209.10", "인보이스 금액": "USD 300", "수량": "3 페일", "개당 중량": "20 kg / 페일", "총 중량": "60 kg", "치수": "30 × 30 × 35 cm × 3개", "총 용적": "약 0.1 CBM (팔레트 미사용)", "포장 형태": "페일 (Pail)", "운송 방식": "해상 LCL + 항공 견적 동시 요청", "화물 준비일": "7일 이내 (10월 20일경)", "인코텀즈": "미정"}, "pickup": "경기도 용인시 처인구 남사읍 당하로 135-5 (17118)", "delivery": {"한글": "중국 광둥성 포산시 난하이구 리수이진 원자오로 18호, 바이화 산업단지 항웨이 클라우드 창고 B구역 SA창고 (Sky9 Cargo 창고, 528244)", "영문": "(Sky9 Cargo Warehouse) Warehouse SA, Block B, Hangwei Cloud Warehouse, Baihua Industrial Park, No.18 Wenjiao Road, Lishui Town, Nanhai District, Foshan City, Guangdong Province 528244, China", "중문": "广东省佛山市南海区里水镇文教路18号 柏华工业园 航威云仓 B区 SA库 (Sky9 Cargo 仓库 / 邮编 528244)"}, "contacts": [{"name": "HONG", "phone": "+86 170 7023 0313"}, {"name": "SEIF", "phone": "+86 132 4683 4705"}], "checks": [{"text": "해상 LCL 견적 수령", "done": false}, {"text": "항공 견적 수령", "done": false}, {"text": "인코텀즈 결정", "done": false}, {"text": "제품 이미지 첨부", "done": false}, {"text": "픽업 일정 확정", "done": false}], "comments": [{"date": "2026-10-13", "author": "", "text": "해상 LCL과 항공 견적을 함께 받아 비교 후 운송 방식 결정 예정."}]}], "wbs": [{"code": "JP", "title": "일본 (Fulfilment)", "todos": [{"id": "1.1", "text": "입고 물동 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "1.2", "text": "Amazon JP, Qoo10, Rakuten 입점 스케줄", "note": ""}, {"id": "1.3", "text": "법인 설립 검토", "note": ""}, {"id": "1.4", "text": "기타 공유사항", "note": ""}]}, {"code": "CN", "title": "중국 (수입·수출)", "todos": [{"id": "2.1", "text": "수동 쟈키 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "2.2", "text": "중장비 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "2.3", "text": "그로홈 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "2.4", "text": "POUR 코트재 중국 선적", "note": "견적 요청 중"}]}, {"code": "SG", "title": "싱가포르 (Fulfilment)", "todos": [{"id": "3.1", "text": "입고 물동 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "3.2", "text": "Shopee 입점 진행사항", "note": ""}, {"id": "3.3", "text": "법인 설립 검토", "note": ""}, {"id": "3.4", "text": "업무 진행사항 공유", "note": ""}]}, {"code": "VN", "title": "베트남 (Fulfilment)", "todos": [{"id": "4.1", "text": "입고 물동 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "4.2", "text": "Shopee 입점 진행사항", "note": ""}, {"id": "4.3", "text": "법인 설립 검토", "note": ""}, {"id": "4.4", "text": "업무 진행사항 공유", "note": ""}]}, {"code": "US", "title": "미국 Amazon (FBA·FBM)", "todos": [{"id": "5.1", "text": "입고 물동 (상세, 선적 예상 스케줄)", "note": ""}, {"id": "5.2", "text": "Amazon US 입점 스케줄", "note": ""}, {"id": "5.3", "text": "기타 공유사항", "note": ""}]}, {"code": "ETC", "title": "기타", "todos": []}]}</script>
+<script id="seed" type="application/json">{"updatedAt": "2026-10-13", "projects": [{"id": "p-pour-cn-2610", "region": "CN", "brand": "POUR", "name": "POUR 코트재 중국 수출 (선전·포산 창고 입고)", "direction": "수출", "route": "한국 → 중국", "status": "견적 요청", "owner": "", "image": "", "start": "2026-10-13", "end": "2026-10-20", "info": {"선적항 (POL)": "해상: 부산항 / 항공: 인천공항", "도착항 (POD)": "중국 선전항 (深圳港, Shenzhen)", "품목": "POUR 코트재 (수성 코팅제, Water-based Coating)", "HS 코드": "3209.10", "인보이스 금액": "USD 300", "수량": "3 페일", "개당 중량": "20 kg / 페일", "총 중량": "60 kg", "치수": "30 × 30 × 35 cm × 3개", "총 용적": "약 0.1 CBM (팔레트 미사용)", "포장 형태": "페일 (Pail)", "운송 방식": "해상 LCL + 항공 견적 동시 요청", "화물 준비일": "7일 이내 (10월 20일경)", "인코텀즈": "미정"}, "pickup": "경기도 용인시 처인구 남사읍 당하로 135-5 (17118)", "delivery": {"한글": "중국 광둥성 포산시 난하이구 리수이진 원자오로 18호, 바이화 산업단지 항웨이 클라우드 창고 B구역 SA창고 (Sky9 Cargo 창고, 528244)", "영문": "(Sky9 Cargo Warehouse) Warehouse SA, Block B, Hangwei Cloud Warehouse, Baihua Industrial Park, No.18 Wenjiao Road, Lishui Town, Nanhai District, Foshan City, Guangdong Province 528244, China", "중문": "广东省佛山市南海区里水镇文教路18号 柏华工业园 航威云仓 B区 SA库 (Sky9 Cargo 仓库 / 邮编 528244)"}, "contacts": [{"name": "HONG", "phone": "+86 170 7023 0313"}, {"name": "SEIF", "phone": "+86 132 4683 4705"}], "checks": [{"text": "해상 LCL 견적 수령", "done": false}, {"text": "항공 견적 수령", "done": false}, {"text": "인코텀즈 결정", "done": false}, {"text": "제품 이미지 첨부", "done": false}, {"text": "픽업 일정 확정", "done": false}], "comments": [{"date": "2026-10-13", "author": "", "text": "해상 LCL과 항공 견적을 함께 받아 비교 후 운송 방식 결정 예정."}]}]}</script>
 <script>
 (function(){
 const LS='wbs-dashboard-v1', TH='wbs-dashboard-theme';
@@ -231,7 +232,7 @@ const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k
 const today=()=>{const d=new Date();return d.toISOString().slice(0,10)};
 let server=null, data=null, f={region:'ALL',dir:'ALL',q:''}, openId=null;
 
-function seed(){try{return JSON.parse($('#seed').textContent)}catch(e){return {projects:[],wbs:[]}}}
+function seed(){try{return JSON.parse($('#seed').textContent)}catch(e){return {projects:[]}}}
 async function load(){
   server=seed();
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(r.ok) server=await r.json();}catch(e){}
@@ -249,7 +250,7 @@ function filtered(){
     (!q||[p.brand,p.name,p.route,...Object.values(p.info||{})].join(' ').toLowerCase().includes(q)));
 }
 function render(){
-  $('#upd').textContent='마지막 수정 '+(data.updatedAt||'-')+' · 지역별 수입·수출 프로젝트와 업무 현황';
+  $('#upd').textContent='마지막 수정 '+(data.updatedAt||'-')+' · 지역별 수입·수출 프로젝트 현황';
   $('#banner').classList.toggle('on',!!ls.get(LS)&&JSON.stringify(data)!==JSON.stringify(server));
   renderKpi(); renderFilters(); renderCards(); renderTl(); renderWbs();
   if(openId) openDrawer(openId,true);
@@ -292,11 +293,15 @@ function renderTl(){
   $('#tl').innerHTML=head+rows+(showT?`<div class="tl-today" style="left:calc(var(--lab) + (100% - var(--lab)) * ${t/100})"><span>오늘</span></div>`:'');
 }
 function renderWbs(){
-  $('#wbs').innerHTML=(data.wbs||[]).filter(g=>f.region==='ALL'||g.code===f.region).map((g,gi)=>`<div class="col"><h3><span class="code">${esc(g.code)}</span>${esc(g.title)}</h3>
-    ${g.todos.map((t,ti)=>`<div class="todo"><span class="id">${esc(t.id)}</span><span class="t">${esc(t.text)}<span class="n${t.note?'':' ph'}" data-g="${data.wbs.indexOf(g)}" data-t="${ti}">${t.note?esc(t.note):'+ 메모'}</span></span></div>`).join('')||'<div class="hint">등록된 업무 없음</div>'}
-    <button class="btn sm ghost addtodo" data-add="${data.wbs.indexOf(g)}">+ 업무 추가</button></div>`).join('');
+  const L=filtered(), order=Object.keys(REG);
+  const groups=order.map((code,gi)=>({code,gi,items:L.filter(p=>p.region===code)})).filter(g=>g.items.length);
+  if(!groups.length){$('#wbs').innerHTML=`<div class="empty" style="grid-column:1/-1">프로젝트를 추가하면 지역별로 자동 분류됩니다.</div>`;return}
+  $('#wbs').innerHTML=groups.map(g=>`<div class="col"><h3><span class="code">${esc(g.code)}</span>${esc(REG[g.code])}<span class="hint" style="margin-left:auto;font-weight:500">${g.items.length}건</span></h3>
+    ${g.items.map((p,ti)=>{const c=p.checks||[],d=c.filter(x=>x.done).length,lc=(p.comments||[]).slice(-1)[0];
+      return `<div class="todo" data-id="${esc(p.id)}"><span class="id">${g.gi+1}.${ti+1}</span><span class="t"><b style="font-weight:600">${esc(p.brand?p.brand+' · ':'')}${esc(p.name)}</b>
+      <span class="badges" style="margin-top:4px"><span class="b ${p.direction==='수출'?'exp':'imp'}">${esc(p.direction)}</span><span class="b st">${esc(p.status)}</span>${c.length?`<span class="b">체크 ${d}/${c.length}</span>`:''}</span>
+      ${lc?`<span class="n ph" style="cursor:pointer">${esc(lc.text)}</span>`:''}</span></div>`}).join('')}</div>`).join('');
 }
-
 function openDrawer(id,silent){
   const p=data.projects.find(x=>x.id===id); if(!p){closeDrawer();return}
   openId=id; const i=p.info||{};
@@ -364,21 +369,16 @@ function exportJson(){
 }
 
 document.addEventListener('click',e=>{
-  const t=e.target, c=t.closest('[data-r],[data-d],.card,.tl-bar,[data-edit],[data-copy],[data-del],[data-mclose],[data-add],.n');
+  const t=e.target, c=t.closest('[data-r],[data-d],.card,.tl-bar,[data-edit],[data-copy],[data-del],[data-mclose],.todo');
   if(!c){if(t.id==='ov')closeDrawer();return}
   if(c.dataset.r){f.region=c.dataset.r;render()}
   else if(c.dataset.d){f.dir=c.dataset.d;render()}
-  else if(c.classList.contains('card')||c.classList.contains('tl-bar'))openDrawer(c.dataset.id);
+  else if(c.classList.contains('card')||c.classList.contains('tl-bar')||c.classList.contains('todo'))openDrawer(c.dataset.id);
   else if(c.dataset.edit)openForm(c.dataset.edit);
   else if(c.dataset.copy!==undefined){navigator.clipboard?.writeText(c.dataset.copy).then(()=>toast('복사했습니다'),()=>toast('복사하지 못했습니다'))}
   else if(c.dataset.del){if(confirm('이 프로젝트를 삭제할까요?')){data.projects=data.projects.filter(x=>x.id!==c.dataset.del);closeDrawer();save()}}
   else if(c.hasAttribute('data-mclose'))$('#modal').classList.remove('on');
-  else if(c.dataset.add!==undefined){const g=data.wbs[+c.dataset.add];const n=g.todos.length+1;const base=(data.wbs.indexOf(g)+1);g.todos.push({id:base+'.'+n,text:'새 업무',note:''});save();
-    const el=document.querySelector(`.n[data-g="${data.wbs.indexOf(g)}"][data-t="${g.todos.length-1}"]`);el&&editText(el,g.todos.length-1,g)}
-  else if(c.classList.contains('n')){const g=data.wbs[+c.dataset.g],ti=+c.dataset.t;const inp=document.createElement('input');inp.value=g.todos[ti].note;c.replaceWith(inp);inp.focus();
-    const done=()=>{g.todos[ti].note=inp.value.trim();save()};inp.onblur=done;inp.onkeydown=ev=>{if(ev.key==='Enter')inp.blur();if(ev.key==='Escape'){inp.onblur=null;render()}}}
 });
-function editText(el,ti,g){const span=el.parentElement;const inp=document.createElement('input');inp.value=g.todos[ti].text;span.prepend(inp);inp.focus();inp.select();inp.onblur=()=>{g.todos[ti].text=inp.value.trim()||'새 업무';save()};inp.onkeydown=ev=>{if(ev.key==='Enter')inp.blur()}}
 $('#drawer').addEventListener('change',e=>{if(e.target.dataset.chk!==undefined){const p=data.projects.find(x=>x.id===openId);p.checks[+e.target.dataset.chk].done=e.target.checked;save()}});
 $('#drawer').addEventListener('click',e=>{
   const p=data.projects.find(x=>x.id===openId); if(!p)return;

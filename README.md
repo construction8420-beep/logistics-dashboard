@@ -4,7 +4,7 @@
 
 ## 파일
 - `index.html` — 대시보드 (브라우저로 열기)
-- `data.json` — 모든 내용(프로젝트, 필수정보, 공유사항, WBS)
+- `data.json` — 모든 내용(프로젝트, 필수정보, 공유사항). 지역별 업무는 프로젝트의 지역 값으로 자동 분류
 - `images/` — 제품 이미지 (예: `images/pour.jpg` → 프로젝트 수정에서 경로 입력)
 - `index.template.html`, `build.py` — data.json을 index.html에 내장할 때 사용 (`python3 build.py`)
 
