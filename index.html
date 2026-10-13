@@ -88,6 +88,29 @@ section{margin-bottom:28px}
 .lastc{padding:0 16px 12px;font-size:12.5px;color:var(--text-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .lastc b{color:var(--text-3);font-weight:500;margin-right:4px}
 .empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:28px;text-align:center;color:var(--text-3)}
+/* urgency + brand */
+.dd{flex:none;align-self:flex-start;font-size:12px;font-weight:700;border-radius:6px;padding:2px 8px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dd.soon{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.dd.late{background:var(--danger);color:#fff;border-color:transparent}
+.dd.none,.dd.done{color:var(--text-3)}
+.ulw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.ul{width:100%;border-collapse:collapse;font-size:13px}
+.ul th{text-align:left;font-size:12px;color:var(--text-3);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.ul td{padding:10px 12px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+.ul tr:last-child td{border-bottom:0}
+.ul tbody tr{cursor:pointer}.ul tbody tr:hover{background:var(--surface-2)}
+.ul .bn{font-weight:600;white-space:nowrap}.ul .pn{min-width:180px}.ul .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ph{color:var(--text-3)}
+.bg{margin-bottom:22px}
+.bgh{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:0 2px 10px;border-bottom:2px solid var(--text);margin-bottom:12px}
+.bgt{display:flex;align-items:center;gap:10px}
+.bgt h3{margin:0;font-size:17px;letter-spacing:-.01em}
+.bgt .c{color:var(--text-3);font-size:12.5px}
+.mgr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+.mgr .ml{font-size:12px;color:var(--text-3);font-weight:600}
+.mgr .mc{color:var(--text-2);font-size:12.5px}
+.mi{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--surface);font-size:13px;width:150px}
+@media (max-width:640px){.ul .hm{display:none}.ul td,.ul th{padding:9px 8px}.ul .pn{min-width:0}}
 /* timeline */
 .tl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow-x:auto}
 .tl-in{min-width:760px;position:relative;--lab:220px}
@@ -194,12 +217,18 @@ label.f textarea{min-height:60px;resize:vertical}
     <div class="chips" id="fRegion"></div>
     <div class="sep"></div>
     <div class="chips" id="fDir"></div>
+    <div class="chips" id="fBrand" style="flex-basis:100%;order:5"></div>
     <div class="search"><input id="q" type="search" placeholder="브랜드 · 프로젝트 · 품목 검색"></div>
   </div>
 
   <section>
-    <div class="sh"><h2>프로젝트</h2><span class="c" id="pcount"></span></div>
-    <div class="grid" id="cards"></div>
+    <div class="sh"><h2>급한 일정 순</h2><span class="c" id="ucount"></span></div>
+    <div class="ulw" id="urgent"></div>
+  </section>
+
+  <section>
+    <div class="sh"><h2>브랜드별 프로젝트</h2><span class="c" id="pcount"></span></div>
+    <div id="cards"></div>
   </section>
 
   <section>
@@ -218,7 +247,7 @@ label.f textarea{min-height:60px;resize:vertical}
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <div class="toast" id="toast"></div>
 
-<script id="seed" type="application/json">{"updatedAt": "2026-10-13", "projects": [{"id": "p-pour-cn-2610", "region": "CN", "brand": "POUR", "name": "POUR 코트재 중국 수출 (선전·포산 창고 입고)", "direction": "수출", "route": "한국 → 중국", "status": "견적 요청", "owner": "", "image": "", "start": "2026-10-13", "end": "2026-10-20", "info": {"선적항 (POL)": "해상: 부산항 / 항공: 인천공항", "도착항 (POD)": "중국 선전항 (深圳港, Shenzhen)", "품목": "POUR 코트재 (수성 코팅제, Water-based Coating)", "HS 코드": "3209.10", "인보이스 금액": "USD 300", "수량": "3 페일", "개당 중량": "20 kg / 페일", "총 중량": "60 kg", "치수": "30 × 30 × 35 cm × 3개", "총 용적": "약 0.1 CBM (팔레트 미사용)", "포장 형태": "페일 (Pail)", "운송 방식": "해상 LCL + 항공 견적 동시 요청", "화물 준비일": "7일 이내 (10월 20일경)", "인코텀즈": "미정"}, "pickup": "경기도 용인시 처인구 남사읍 당하로 135-5 (17118)", "delivery": {"한글": "중국 광둥성 포산시 난하이구 리수이진 원자오로 18호, 바이화 산업단지 항웨이 클라우드 창고 B구역 SA창고 (Sky9 Cargo 창고, 528244)", "영문": "(Sky9 Cargo Warehouse) Warehouse SA, Block B, Hangwei Cloud Warehouse, Baihua Industrial Park, No.18 Wenjiao Road, Lishui Town, Nanhai District, Foshan City, Guangdong Province 528244, China", "중문": "广东省佛山市南海区里水镇文教路18号 柏华工业园 航威云仓 B区 SA库 (Sky9 Cargo 仓库 / 邮编 528244)"}, "contacts": [{"name": "HONG", "phone": "+86 170 7023 0313"}, {"name": "SEIF", "phone": "+86 132 4683 4705"}], "checks": [{"text": "해상 LCL 견적 수령", "done": false}, {"text": "항공 견적 수령", "done": false}, {"text": "인코텀즈 결정", "done": false}, {"text": "제품 이미지 첨부", "done": false}, {"text": "픽업 일정 확정", "done": false}], "comments": [{"date": "2026-10-13", "author": "", "text": "해상 LCL과 항공 견적을 함께 받아 비교 후 운송 방식 결정 예정."}]}]}</script>
+<script id="seed" type="application/json">{"updatedAt": "2026-10-13", "projects": [{"id": "p-pour-cn-2610", "region": "CN", "brand": "POUR", "name": "POUR 코트재 중국 수출 (선전·포산 창고 입고)", "direction": "수출", "route": "한국 → 중국", "status": "견적 요청", "owner": "", "image": "", "start": "2026-10-13", "end": "2026-10-20", "info": {"선적항 (POL)": "해상: 부산항 / 항공: 인천공항", "도착항 (POD)": "중국 선전항 (深圳港, Shenzhen)", "품목": "POUR 코트재 (수성 코팅제, Water-based Coating)", "HS 코드": "3209.10", "인보이스 금액": "USD 300", "수량": "3 페일", "개당 중량": "20 kg / 페일", "총 중량": "60 kg", "치수": "30 × 30 × 35 cm × 3개", "총 용적": "약 0.1 CBM (팔레트 미사용)", "포장 형태": "페일 (Pail)", "운송 방식": "해상 LCL + 항공 견적 동시 요청", "화물 준비일": "7일 이내 (10월 20일경)", "인코텀즈": "미정"}, "pickup": "경기도 용인시 처인구 남사읍 당하로 135-5 (17118)", "delivery": {"한글": "중국 광둥성 포산시 난하이구 리수이진 원자오로 18호, 바이화 산업단지 항웨이 클라우드 창고 B구역 SA창고 (Sky9 Cargo 창고, 528244)", "영문": "(Sky9 Cargo Warehouse) Warehouse SA, Block B, Hangwei Cloud Warehouse, Baihua Industrial Park, No.18 Wenjiao Road, Lishui Town, Nanhai District, Foshan City, Guangdong Province 528244, China", "중문": "广东省佛山市南海区里水镇文教路18号 柏华工业园 航威云仓 B区 SA库 (Sky9 Cargo 仓库 / 邮编 528244)"}, "contacts": [{"name": "HONG", "phone": "+86 170 7023 0313"}, {"name": "SEIF", "phone": "+86 132 4683 4705"}], "checks": [{"text": "해상 LCL 견적 수령", "done": false}, {"text": "항공 견적 수령", "done": false}, {"text": "인코텀즈 결정", "done": false}, {"text": "제품 이미지 첨부", "done": false}, {"text": "픽업 일정 확정", "done": false}], "comments": [{"date": "2026-10-13", "author": "", "text": "해상 LCL과 항공 견적을 함께 받아 비교 후 운송 방식 결정 예정."}]}], "brands": {}}</script>
 <script>
 (function(){
 const LS='wbs-dashboard-v1', TH='wbs-dashboard-theme';
@@ -229,8 +258,8 @@ const TL_START=new Date(2026,7,1), TL_END=new Date(2027,3,1);
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
-const today=()=>{const d=new Date();return d.toISOString().slice(0,10)};
-let server=null, data=null, f={region:'ALL',dir:'ALL',q:''}, openId=null;
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+let server=null, data=null, f={region:'ALL',dir:'ALL',brand:'ALL',q:''}, openId=null;
 
 function seed(){try{return JSON.parse($('#seed').textContent)}catch(e){return {projects:[]}}}
 async function load(){
@@ -246,11 +275,24 @@ const isMiss=v=>!v||/미정|확인 필요|첨부 예정/.test(v);
 
 function filtered(){
   const q=f.q.trim().toLowerCase();
-  return data.projects.filter(p=>(f.region==='ALL'||p.region===f.region)&&(f.dir==='ALL'||p.direction===f.dir)&&
-    (!q||[p.brand,p.name,p.route,...Object.values(p.info||{})].join(' ').toLowerCase().includes(q)));
+  return data.projects.filter(p=>(f.region==='ALL'||p.region===f.region)&&(f.dir==='ALL'||p.direction===f.dir)&&(f.brand==='ALL'||bname(p)===f.brand)&&
+    (!q||[p.brand,p.name,p.route,mgr(p).manager,...Object.values(p.info||{})].join(' ').toLowerCase().includes(q))).sort(byUrg);
+}
+const bname=p=>(p.brand||'').trim()||'브랜드 미입력';
+const mgr=p=>((data.brands||{})[bname(p)])||{manager:'',contact:''};
+const closed=p=>['완료','보류'].includes(p.status);
+function dleft(p){const d=p.end||p.start;if(!d)return null;const t=new Date(today()+'T00:00:00'),e=new Date(d+'T00:00:00');return Math.round((e-t)/864e5)}
+function urg(p){if(closed(p))return 1e6;const n=dleft(p);return n===null?1e5:n}
+function byUrg(a,b){return urg(a)-urg(b)||String(a.name).localeCompare(String(b.name),'ko')}
+function dday(p){
+  if(closed(p))return `<span class="dd done">${esc(p.status)}</span>`;
+  const n=dleft(p); if(n===null)return `<span class="dd none">일정 미정</span>`;
+  if(n<0)return `<span class="dd late">지연 ${-n}일</span>`;
+  if(n===0)return `<span class="dd late">D-DAY</span>`;
+  return `<span class="dd ${n<=3?'late':n<=7?'soon':''}">D-${n}</span>`;
 }
 function render(){
-  $('#upd').textContent='마지막 수정 '+(data.updatedAt||'-')+' · 지역별 수입·수출 프로젝트 현황';
+  $('#upd').textContent='마지막 수정 '+(data.updatedAt||'-')+' · 브랜드별 수입·수출 일정 현황';
   $('#banner').classList.toggle('on',!!ls.get(LS)&&JSON.stringify(data)!==JSON.stringify(server));
   renderKpi(); renderFilters(); renderCards(); renderTl(); renderWbs();
   if(openId) openDrawer(openId,true);
@@ -265,23 +307,45 @@ function renderKpi(){
 function renderFilters(){
   const regs=['ALL',...Object.keys(REG)];
   $('#fRegion').innerHTML=regs.map(r=>`<button class="chip${f.region===r?' on':''}" data-r="${r}">${r==='ALL'?'전체 지역':REG[r]}</button>`).join('');
+  const brands=[...new Set(data.projects.map(bname))].sort((a,b)=>a.localeCompare(b,'ko'));
+  if(f.brand!=='ALL'&&!brands.includes(f.brand))f.brand='ALL';
+  $('#fBrand').innerHTML=['ALL',...brands].map(b=>`<button class="chip${f.brand===b?' on':''}" data-br="${esc(b)}">${b==='ALL'?'전체 브랜드':esc(b)}</button>`).join('');
   $('#fDir').innerHTML=['ALL','수출','수입'].map(d=>`<button class="chip${f.dir===d?' on':''}" data-d="${d}">${d==='ALL'?'수출+수입':d}</button>`).join('');
 }
 function thumb(p){return p.image?`<div class="thumb has"><img src="${esc(p.image)}" alt="${esc(p.name)} 제품 이미지"></div>`:`<div class="thumb">제품<br>이미지</div>`}
 function badges(p){return `<span class="b ${p.direction==='수출'?'exp':'imp'}">${esc(p.direction)}</span><span class="b">${esc(REG[p.region]||p.region)}</span><span class="b st">${esc(p.status)}</span>`}
-function renderCards(){
-  const L=filtered();
-  $('#pcount').textContent=L.length+'건';
-  if(!L.length){$('#cards').innerHTML=`<div class="empty">조건에 맞는 프로젝트가 없습니다. <b>+ 프로젝트 추가</b>로 새 건을 등록하세요.</div>`;return}
-  $('#cards').innerHTML=L.map(p=>{
+function card(p){
     const i=p.info||{}, c=p.checks||[], d=c.filter(x=>x.done).length, lc=(p.comments||[]).slice(-1)[0];
     const fx=[['경로',p.route],['품목',i['품목']],['수량·중량',[i['수량'],i['총 중량']].filter(Boolean).join(' / ')],['운송',i['운송 방식']],['화물 준비',i['화물 준비일']]].filter(x=>x[1]);
     return `<article class="card" data-id="${esc(p.id)}" tabindex="0">
-      <div class="head">${thumb(p)}<div><div class="brand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}</div></div></div>
+      <div class="head">${thumb(p)}<div style="flex:1;min-width:0"><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}</div></div>${dday(p)}</div>
       <dl class="facts">${fx.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${lc?`<div class="lastc"><b>${esc(lc.date)}</b>${esc(lc.text)}</div>`:''}
       <div class="foot"><span>체크 ${d}/${c.length}</span><div class="prog"><i style="width:${c.length?d/c.length*100:0}%"></i></div><span>${esc(p.start||'')}${p.end?' → '+esc(p.end):''}</span></div>
-    </article>`}).join('');
+    </article>`}
+function renderCards(){
+  const L=filtered();
+  $('#pcount').textContent=L.length+'건';
+  const U=L.filter(p=>!closed(p));
+  $('#ucount').textContent=U.length+'건 · 마감일 빠른 순';
+  $('#urgent').innerHTML=U.length?`<table class="ul"><thead><tr><th>일정</th><th>브랜드</th><th>프로젝트</th><th class="hm">구분</th><th class="hm">상태</th><th class="hm">마감일</th><th>담당자</th></tr></thead><tbody>${
+    U.map(p=>`<tr data-id="${esc(p.id)}"><td>${dday(p)}</td><td class="bn">${esc(bname(p))}</td><td class="pn">${esc(p.name)}</td><td class="hm"><span class="b ${p.direction==='수출'?'exp':'imp'}">${esc(p.direction)}</span></td><td class="hm">${esc(p.status)}</td><td class="hm num">${esc(p.end||p.start||'-')}</td><td class="${mgr(p).manager?'':'ph'}">${esc(mgr(p).manager||'미지정')}</td></tr>`).join('')}</tbody></table>`
+    :`<div class="empty">진행 중인 일정이 없습니다.</div>`;
+  if(!L.length){$('#cards').innerHTML=`<div class="empty">조건에 맞는 프로젝트가 없습니다. <b>+ 프로젝트 추가</b>로 새 건을 등록하세요.</div>`;return}
+  const groups=[];L.forEach(p=>{const n=bname(p);let g=groups.find(x=>x.n===n);if(!g){g={n,items:[]};groups.push(g)}g.items.push(p)});
+  $('#cards').innerHTML=groups.map(g=>{const m=(data.brands||{})[g.n]||{};const open=g.items.filter(p=>!closed(p)).length;
+    return `<div class="bg"><div class="bgh"><div class="bgt"><h3>${esc(g.n)}</h3><span class="c">${g.items.length}건${open!==g.items.length?` · 진행 ${open}건`:''}</span>${dday(g.items[0])}</div>
+      <div class="mgr" data-brand="${esc(g.n)}"><span class="ml">담당자</span>${m.manager?`<b>${esc(m.manager)}</b>${m.contact?`<span class="mc">${esc(m.contact)}</span>`:''}`:'<span class="ph">미지정</span>'}<button class="btn sm" data-mgr="${esc(g.n)}">${m.manager?'수정':'입력'}</button></div></div>
+      <div class="grid">${g.items.map(card).join('')}</div></div>`}).join('');
+}
+function editMgr(n){
+  const box=[...document.querySelectorAll('.mgr')].find(x=>x.dataset.brand===n); if(!box)return;
+  const m=(data.brands||{})[n]||{};
+  box.innerHTML=`<span class="ml">담당자</span><input class="mi" id="mN" placeholder="이름" value="${esc(m.manager||'')}"><input class="mi" id="mC" placeholder="연락처·이메일 (선택)" value="${esc(m.contact||'')}"><button class="btn sm primary" id="mS">저장</button><button class="btn sm ghost" id="mX">취소</button>`;
+  $('#mN').focus();
+  const sv=()=>{data.brands=data.brands||{};const v={manager:$('#mN').value.trim(),contact:$('#mC').value.trim()};if(v.manager||v.contact)data.brands[n]=v;else delete data.brands[n];save();toast('담당자를 저장했습니다')};
+  $('#mS').onclick=sv;$('#mX').onclick=()=>render();
+  box.onkeydown=e=>{if(e.key==='Enter')sv();if(e.key==='Escape')render()};
 }
 function pos(ds){const d=new Date(ds+'T00:00:00');return Math.max(0,Math.min(1,(d-TL_START)/(TL_END-TL_START)))*100}
 function renderTl(){
@@ -309,6 +373,7 @@ function openDrawer(id,silent){
   $('#drawer').innerHTML=`<div class="dh">${thumb(p)}<div style="min-width:0"><div class="brand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div><div class="badges">${badges(p)}<span class="b">${esc(p.route||'')}</span></div></div>
     <div class="x" style="display:flex;gap:6px"><button class="btn sm" data-edit="${esc(p.id)}">수정</button><button class="btn sm ghost" id="dClose" aria-label="닫기">✕</button></div></div>
     <div class="db">
+      <div class="blk"><h4>일정 · 브랜드 담당자</h4><table class="kv"><tr><th>일정</th><td>${dday(p)} <span style="margin-left:6px">${esc(p.start||'-')} → ${esc(p.end||'-')}</span></td></tr><tr><th>브랜드 담당자</th><td class="${mgr(p).manager?'':'miss'}">${esc(mgr(p).manager||'미지정')}${mgr(p).contact?' · '+esc(mgr(p).contact):''}</td></tr></table></div>
       <div class="blk"><h4>필수 정보</h4><table class="kv">${kv.map(k=>`<tr><th>${esc(k)}</th><td class="${isMiss(i[k])?'miss':''}">${esc(i[k]||'미입력')}</td></tr>`).join('')}</table></div>
       <div class="blk"><h4>픽업 주소</h4><div class="addr"><span class="lg">KR</span><span class="tx">${esc(p.pickup||'미입력')}</span>${p.pickup?`<button class="btn sm" data-copy="${esc(p.pickup)}">복사</button>`:''}</div></div>
       <div class="blk"><h4>배송지 주소</h4>${Object.entries(p.delivery||{}).map(([k,v])=>`<div class="addr"><span class="lg">${esc(k)}</span><span class="tx">${esc(v)}</span><button class="btn sm" data-copy="${esc(v)}">복사</button></div>`).join('')||'<div class="hint">미입력</div>'}</div>
@@ -330,10 +395,10 @@ function openForm(id){
   $('#mbox').innerHTML=`<div class="mh"><h3>${id?'프로젝트 수정':'새 프로젝트'}</h3><button class="btn sm ghost" style="margin-left:auto" data-mclose>✕</button></div>
   <form class="mb" id="pf">
     <div class="fs"><h4>기본 정보</h4><div class="fg">
-      ${inp('brand','브랜드명',p.brand)}${inp('name','프로젝트명',p.name)}
+      <label class="f">브랜드명<input name="brand" list="brandList" value="${esc(p.brand)}"><datalist id="brandList">${[...new Set(data.projects.map(x=>x.brand).filter(Boolean))].map(b=>`<option value="${esc(b)}">`).join('')}</datalist></label>${inp('name','프로젝트명',p.name)}
       ${sel('direction','수입/수출 구분',p.direction,[['수출','수출'],['수입','수입']])}${inp('route','경로 (예: 한국 → 중국)',p.route)}
       ${sel('region','지역',p.region,Object.entries(REG))}${sel('status','진행 상태',p.status,STATUS.map(s=>[s,s]))}
-      ${inp('start','시작일',p.start,'date')}${inp('end','완료 예정일',p.end,'date')}
+      ${inp('start','시작일',p.start,'date')}${inp('end','마감일 (급한 순 정렬 기준)',p.end,'date')}
       <label class="f full">제품 이미지 <input name="image" value="${esc(p.image&&!p.image.startsWith('data:')?p.image:'')}" placeholder="이미지 주소 또는 저장소 경로 (예: images/pour.jpg)"><span class="hint">또는 파일 선택: <input type="file" accept="image/*" id="imgFile"> ${p.image?'· 현재 이미지 있음':''}</span></label>
     </div></div>
     <div class="fs"><h4>필수 정보</h4><div class="fg">${INFO_KEYS.map(k=>inp('info:'+k,k,(p.info||{})[k]||'')).join('')}</div></div>
@@ -369,10 +434,13 @@ function exportJson(){
 }
 
 document.addEventListener('click',e=>{
-  const t=e.target, c=t.closest('[data-r],[data-d],.card,.tl-bar,[data-edit],[data-copy],[data-del],[data-mclose],.todo');
+  const t=e.target, c=t.closest('[data-r],[data-d],[data-br],[data-mgr],.ul tbody tr,.card,.tl-bar,[data-edit],[data-copy],[data-del],[data-mclose],.todo');
   if(!c){if(t.id==='ov')closeDrawer();return}
   if(c.dataset.r){f.region=c.dataset.r;render()}
   else if(c.dataset.d){f.dir=c.dataset.d;render()}
+  else if(c.dataset.br){f.brand=c.dataset.br;render()}
+  else if(c.dataset.mgr!==undefined)editMgr(c.dataset.mgr);
+  else if(c.tagName==='TR')openDrawer(c.dataset.id);
   else if(c.classList.contains('card')||c.classList.contains('tl-bar')||c.classList.contains('todo'))openDrawer(c.dataset.id);
   else if(c.dataset.edit)openForm(c.dataset.edit);
   else if(c.dataset.copy!==undefined){navigator.clipboard?.writeText(c.dataset.copy).then(()=>toast('복사했습니다'),()=>toast('복사하지 못했습니다'))}
