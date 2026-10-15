@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#003793">
+<title>PYRON 파이론 | 창고 물류장비 · by PAIMOTION</title>
+<meta name="description" content="파렛트 옮기는 일, 이제 가볍게. 수동부터 전동까지 PYRON 파렛트트럭 · VAT 포함 정찰가 · 수량 구간가 · 대량 견적">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PYRON 파이론">
+<meta property="og:title" content="PYRON 파이론 | 창고 물류장비">
+<meta property="og:description" content="파렛트 옮기는 일, 이제 가볍게. 수동부터 전동까지 · 수량 구간가 · 대량 견적">
+<meta property="og:url" content="https://construction8420-beep.github.io/logistics-dashboard/pyron/">
+<meta property="og:image" content="https://construction8420-beep.github.io/logistics-dashboard/pyron/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://construction8420-beep.github.io/logistics-dashboard/pyron/og.jpg">
+<link rel="icon" href="img/02-a05ef86f.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#003793;--blue2:#0b4fd1;--navy:#06163d;--ink:#1E1E1E;--yellow:#FFD100;--bg:#F3F5F9;--line:#E3E7EF;--mute:#6B7385;--ok:#0f9d58;--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{font-family:Pretendard,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;max-width:520px;margin:0 auto;padding-bottom:calc(66px + var(--sb));overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}img{display:block;max-width:100%}
+.px{padding-left:20px;padding-right:20px}
+.eyebrow{font-family:'Barlow Condensed';font-weight:700;letter-spacing:2.5px;font-size:13px;color:var(--blue2)}
+.h2{font-size:25px;font-weight:800;letter-spacing:-.6px;line-height:1.28;margin:4px 0 8px}
+.lead{color:var(--mute);font-size:14.5px}
+section{padding:44px 0}
+.btn{display:flex;align-items:center;justify-content:center;height:52px;border-radius:12px;font-weight:700;font-size:15.5px;width:100%}
+.btn-y{background:var(--yellow);color:#111}.btn-b{background:var(--blue);color:#fff}.btn-l{background:#fff;border:1.5px solid var(--line)}.btn-o{border:1.5px solid rgba(255,255,255,.45);color:#fff}
+.btn:active{transform:scale(.98)}
+header{position:sticky;top:0;z-index:50;background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px}.brand img{height:20px}
+.brand span{font-family:'Barlow Condensed';font-size:10.5px;letter-spacing:1.5px;color:var(--mute);border-left:1px solid var(--line);padding-left:8px;line-height:1.1}
+.brand span b{display:block;color:var(--ink);font-size:12px;letter-spacing:2px}
+.hicons{display:flex}.hicons button{width:44px;height:44px;display:grid;place-items:center;position:relative}
+.hicons i{position:absolute;top:5px;right:4px;background:var(--yellow);font-style:normal;font-size:10.5px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center}
+.hero{background:#030a1c;color:#fff}
+.hero .img{height:320px;background:url('img/01-9976c5c3.jpg') 82% 62%/165% no-repeat}
+.hero .txt{margin-top:-110px;position:relative;padding:0 20px 28px;background:linear-gradient(180deg,rgba(3,10,28,0) 0,#030a1c 100px)}
+.tag{display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 12px;background:rgba(3,10,28,.5)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);display:inline-block}
+.hero h1{font-family:'Barlow Condensed';font-weight:800;font-size:58px;line-height:.92;margin:14px 0 12px}
+.hero h1 span{color:var(--yellow)}
+.hero .sub{font-size:17px;font-weight:700;line-height:1.45}
+.hero .sub2{color:#aeb9d4;font-size:13.5px;margin:6px 0 20px}
+.hero .ctas{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#20335f}
+.trust div{background:var(--blue);color:#fff;padding:14px 16px}
+.trust b{display:block;font-size:14px}.trust span{font-size:11.5px;color:#c8d4f5}
+.catbar{position:sticky;top:56px;z-index:40;background:#fff;padding:10px 0;border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 20px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;height:36px;padding:0 15px;border-radius:18px;background:var(--bg);font-weight:700;font-size:13.5px;color:var(--mute)}
+.chips button.on{background:var(--ink);color:#fff}
+.plist{display:grid;gap:14px;padding:16px 20px 0}
+.pc{border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pc .ph{cursor:pointer;position:relative;height:220px;display:flex;align-items:center;justify-content:center;isolation:isolate;overflow:hidden}
+.pc .ph img{height:220px;width:auto;max-width:none;mix-blend-mode:multiply}
+.ton{position:absolute;right:14px;bottom:2px;font-family:'Barlow Condensed';font-weight:800;font-size:62px;color:#eef1f7;z-index:-1;line-height:1}
+.badge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:800;padding:4px 9px;border-radius:6px}
+.b-y{background:var(--yellow)}.b-b{background:var(--blue);color:#fff}.b-k{background:var(--ink);color:#fff}
+.pc .bd{padding:14px 16px 16px;border-top:1px solid var(--line)}
+.se{font-size:11.5px;color:var(--mute);font-weight:600}
+.pc h3{font-family:'Barlow Condensed';font-size:27px;line-height:1.05}
+.kr{font-weight:700;font-size:14.5px;margin-bottom:10px}
+.ks{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-radius:12px;margin-bottom:10px}
+.ks div{text-align:center;padding:9px 4px}.ks div+div{border-left:1px solid #e1e5ee}
+.ks b{display:block;font-family:'Barlow Condensed';font-size:20px;color:var(--blue);line-height:1.1}.ks small{font-size:10.5px;color:var(--mute)}
+.ship{font-size:12px;color:var(--ok);font-weight:700;margin-bottom:6px}
+.was{font-size:12.5px;color:#9aa2b4;text-decoration:line-through}
+.pr b{font-size:23px;font-weight:800}.pr .vat{font-size:11.5px;color:var(--mute)}
+.tierrow{display:flex;gap:6px;margin:8px 0 12px}
+.tierrow span{flex:1;background:#eef3ff;border-radius:8px;padding:6px 8px;font-size:11px;color:var(--blue);font-weight:700;text-align:center}
+.tierrow span b{display:block;font-size:13px}
+.ask{display:block;font-size:16px;font-weight:800;color:var(--blue);margin:4px 0 12px}
+.acts{display:grid;grid-template-columns:1.3fr 1fr;gap:8px}.acts .btn{height:48px;font-size:14.5px}
+.uses{background:var(--bg)}
+.ucard{margin:14px 20px 0;background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+.ucard img{width:100%;height:220px;object-fit:cover}
+.ucard .tx{padding:18px}
+.ucard h3{font-size:19px;line-height:1.35;margin:4px 0 10px}
+.pains{display:grid;gap:7px;margin-bottom:14px}
+.pains div{display:flex;gap:10px;font-size:14px}
+.pains i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;background:#eef3ff;color:var(--blue);display:grid;place-items:center;font-size:12px;font-weight:800}
+.rec{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:12px}
+.rec img{width:62px;height:62px;object-fit:contain;mix-blend-mode:multiply;flex:none}
+.rec b{display:block;font-family:'Barlow Condensed';font-size:20px}.rec span{font-size:12.5px;color:var(--mute);line-height:1.4;display:block}
+.spot{background:var(--navy);color:#fff}
+.spot .stage{margin:16px 20px;border-radius:18px;height:250px;background:url('img/01-9976c5c3.jpg') 78% 66%/170% no-repeat}
+.spot .eyebrow{color:var(--yellow)}.spot .lead{color:#aeb9d4}
+.five{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 20px}
+.five div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 6px;text-align:center}
+.five b{display:block;font-family:'Barlow Condensed';font-size:24px;line-height:1}.five small{font-size:11px;color:#aeb9d4}
+.seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px;margin:14px 20px 10px}
+.seg button{flex:1;height:40px;border-radius:9px;font-weight:700;font-size:14px;color:var(--mute);font-family:'Barlow Condensed';font-size:18px;letter-spacing:.5px}
+.seg button.on{background:var(--blue);color:#fff}
+.sheet{margin:0 20px;background:#fff;border-radius:16px;border:1px solid var(--line);overflow:hidden}
+.sheet .top{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:3px solid var(--blue)}
+.sheet .top img{height:15px}.sheet .top span{font-family:'Barlow Condensed';font-weight:700;letter-spacing:1.5px;font-size:12.5px;color:var(--mute)}
+.srow{display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid #eef1f6;font-size:13.5px}
+.srow .no{font-family:'Barlow Condensed';color:#9aa2b4}
+.srow .v{font-family:'Barlow Condensed';font-weight:700;font-size:17px;text-align:right}
+.srow .v small{font-family:Pretendard;font-size:10.5px;color:var(--mute);font-weight:500;margin-left:3px}
+.sgrp{background:#f6f8fc;color:var(--blue);font-weight:800;font-size:12px;padding:8px 16px}
+.more{display:block;width:100%;padding:14px;font-weight:700;color:var(--blue);font-size:14px}
+.acc{margin:14px 20px 0}
+.acc details{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.acc summary{list-style:none;padding:15px 16px;font-weight:700;font-size:14.5px;display:flex;gap:10px;align-items:center}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary:after{content:"+";margin-left:auto;color:var(--mute);font-size:19px}
+.acc details[open] summary:after{content:"−"}
+.acc summary i{font-style:normal;font-family:'Barlow Condensed';color:var(--blue2);font-size:15px}
+.acc .a{padding:0 16px 15px;color:#4a5266;font-size:13.5px}.acc .a ol{padding-left:18px;display:grid;gap:4px}
+.pai{background:#0a0d14;color:#fff}
+.pai .eyebrow{color:#7aa6ff}.pai .lead{color:#aab3c5}
+.pai-mark{font-family:'Barlow Condensed';font-weight:800;font-size:42px;letter-spacing:5px;line-height:1}.pai-mark span{color:#2B6FFF}
+.facts{display:grid;gap:8px;padding:16px 20px}
+.facts div{background:#141a26;border-radius:14px;padding:14px 16px}
+.facts .y{font-family:'Barlow Condensed';color:#7aa6ff;font-size:14px;font-weight:700}
+.facts b{display:block;font-size:15px}.facts span{font-size:12.5px;color:#9aa4b8}
+.inq{background:var(--ink);color:#fff;padding-bottom:0}
+.inq .lead{color:#a9b0c0}
+.qc{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 20px}
+.qc a{background:#2b2b2b;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.qc .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center}
+.qc b{font-size:14.5px}.qc small{color:#9aa2b4;font-size:11.5px}
+form.q{background:#fff;color:var(--ink);border-radius:20px 20px 0 0;padding:22px 20px 30px}
+.f{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.f label{font-size:13.5px;font-weight:700}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);border-radius:12px;padding:0 14px;height:52px;font:inherit;font-size:16px;outline:none;background:#fff;width:100%}
+.f textarea{height:auto;padding:12px 14px}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--blue)}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pick label{border:1.5px solid var(--line);border-radius:10px;padding:0 12px;height:42px;display:flex;align-items:center;font-weight:600;font-size:14px}
+.pick input{display:none}.pick label:has(input:checked){border-color:var(--blue);background:#eef3ff;color:var(--blue)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.agree{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--mute);margin:16px 0}.agree input{width:20px;height:20px;flex:none}
+footer{background:#0b0b0b;color:#8c93a3;font-size:12px;padding:28px 20px;line-height:1.7}
+footer img{height:19px;margin-bottom:10px}footer b{color:#d6dae3}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:520px;z-index:60;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:var(--sb)}
+.tabbar a,.tabbar button{height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--mute)}
+.tabbar svg{width:22px;height:22px}.tabbar .on{color:var(--blue)}
+.tabbar .cta{color:#111}
+.tabbar .cic{width:46px;height:46px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;margin-top:-22px;box-shadow:0 6px 16px rgba(255,180,0,.45)}
+.kfab{position:fixed;right:max(14px,calc(50% - 246px));bottom:calc(78px + var(--sb));z-index:55;width:52px;height:52px;border-radius:50%;background:#FEE500;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.ov{position:fixed;inset:0;background:rgba(5,10,25,.55);z-index:80;opacity:0;pointer-events:none;transition:.25s}.ov.on{opacity:1;pointer-events:auto}
+.sh{position:fixed;left:50%;bottom:0;width:100%;max-width:520px;height:94vh;height:94dvh;background:#fff;z-index:90;border-radius:20px 20px 0 0;transform:translate(-50%,100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.sh.on{transform:translate(-50%,0)}
+.grab{flex:none;height:26px;display:grid;place-items:center}.grab:before{content:"";width:40px;height:5px;border-radius:3px;background:#d3d9e6}
+.sh .x{position:absolute;right:12px;top:10px;width:40px;height:40px;border-radius:50%;background:var(--bg);font-size:22px;z-index:3}
+.sh .body{flex:1;overflow-y:auto}
+.sh .foot{flex:none;border-top:1px solid var(--line);padding:12px 16px calc(12px + var(--sb))}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.gal::-webkit-scrollbar{display:none}
+.gal div{flex:none;width:100%;height:270px;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;isolation:isolate;overflow:hidden}
+.gal img{height:270px;width:auto;max-width:none;mix-blend-mode:multiply}.gal img.scene{width:100%;height:270px;object-fit:cover;mix-blend-mode:normal}
+.galdots{display:flex;justify-content:center;gap:5px;margin:6px 0}.galdots span{width:6px;height:6px;border-radius:3px;background:#d3d9e6}.galdots span.on{width:16px;background:var(--blue)}
+.pd-h{padding:6px 20px 0}.pd-h h2{font-family:'Barlow Condensed';font-size:40px;line-height:1}.pd-h .krn{font-weight:800;font-size:16.5px;margin:2px 0 6px}.pd-h p{color:var(--mute);font-size:14px;margin-bottom:12px}
+.opt{padding:16px 20px;border-top:8px solid var(--bg)}
+.opt h5{font-size:15px;margin-bottom:10px;display:flex;justify-content:space-between}.opt h5 small{color:var(--mute);font-weight:500;font-size:12px}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tiers div{border:1.5px solid var(--line);border-radius:12px;padding:9px 10px}.tiers div.on{border-color:var(--blue);background:#eef3ff}
+.tiers small{display:block;font-size:11px;color:var(--mute)}.tiers b{font-size:13px;white-space:nowrap;letter-spacing:-.3px}
+.qtyrow{display:flex;align-items:center;gap:12px;margin-top:12px}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:12px}
+.qty button{width:48px;height:46px;font-size:22px}.qty span{width:40px;text-align:center;font-weight:800;font-size:17px}
+.hint{font-size:12.5px;color:var(--blue);font-weight:700}
+.warn{font-size:12.5px;color:#9a6700;background:#fff8db;border-radius:10px;padding:10px 12px;margin-top:10px}
+.notice{border:1px solid var(--line);border-radius:12px;font-size:12px;overflow:hidden}
+.notice div{display:grid;grid-template-columns:104px 1fr;border-bottom:1px solid var(--line)}.notice div:last-child{border:0}
+.notice span{padding:9px 12px}.notice span:first-child{background:var(--bg);font-weight:700}
+.buybar{display:grid;grid-template-columns:auto 1fr 1.3fr;gap:8px;align-items:center}
+.buybar .tot small{display:block;font-size:11px;color:var(--mute)}.buybar .tot b{font-size:19px;font-weight:800}
+.buybar .btn{height:50px;font-size:15px}
+.ci{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);align-items:center}
+.ci img{width:64px;height:64px;object-fit:contain;border:1px solid var(--line);border-radius:10px}
+.ci b{display:block}.ci small{display:block;color:var(--mute);font-size:12px}.ci .rm{font-size:12.5px;color:var(--mute);text-decoration:underline;padding:10px}
+.sumbox{background:var(--bg);border-radius:14px;padding:14px 16px;margin:14px 20px;font-size:14px}.sumbox div{display:flex;justify-content:space-between;gap:10px}
+.done{text-align:center;padding:60px 24px}.done .big{width:76px;height:76px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;margin:0 auto 16px;font-size:36px;font-weight:800}
+.toast{position:fixed;left:50%;top:70px;transform:translate(-50%,-10px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;z-index:120;opacity:0;transition:.25s;pointer-events:none;width:max-content;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<noscript><div style="position:sticky;top:0;z-index:999;background:#FFD100;color:#111;padding:12px 16px;font-size:14px;font-weight:700;line-height:1.45">지금은 미리보기 화면이라 버튼이 작동하지 않아요.<br>오른쪽 위 공유(↗) → <u>Safari/Chrome으로 열기</u>를 눌러주세요.</div></noscript>
+<header>
+ <a class="brand" href="#top"><img src="img/02-a05ef86f.png" alt="PYRON"><span>by<b id="h-by">PAIMOTION</b></span></a>
+ <div class="hicons"><button onclick="openCart()" aria-label="장바구니"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="2"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><i id="cartn">0</i></button></div>
+</header>
+
+<div class="hero" id="top"><div class="img"></div><div class="txt">
+ <span class="tag"><span class="dot"></span>WAREHOUSE EQUIPMENT</span>
+ <h1>SMART STEEL<br>IN <span>MOTION.</span></h1>
+ <p class="sub">파렛트 옮기는 일, 이제 가볍게.<br>수동부터 전동까지, PYRON.</p>
+ <p class="sub2">1대는 바로 구매, 여러 대는 구간가로.</p>
+ <div class="ctas"><a class="btn btn-y" href="#lineup">제품 보기</a><a class="btn btn-o" href="#uses">현장별 추천</a></div>
+</div></div>
+<div class="trust"><div><b>VAT 포함 정찰가</b><span>별도가 함께 표기</span></div><div><b>수량 구간가</b><span>많이 살수록 대당 ↓</span></div><div><b id="t-ship"></b><span>화물 배송 · 세금계산서</span></div><div><b>Physical AI 안전기업</b><span id="t-co"></span></div></div>
+
+<section id="lineup" style="padding-top:34px">
+ <div class="px"><div class="eyebrow">PRODUCT LINEUP</div><h2 class="h2">파렛트 트럭, 필요한 만큼</h2></div>
+ <div class="catbar" style="margin-top:10px"><div class="chips" id="cats"><button class="on" data-c="all">전체</button><button data-c="전동">전동 (AC)</button><button data-c="수동">수동 유압</button><button data-c="2000">2톤 이상</button></div></div>
+ <div class="plist" id="plist"></div>
+</section>
+
+<section class="uses" id="uses">
+ <div class="px"><div class="eyebrow">BY WORKPLACE</div><h2 class="h2">우리 현장엔 어떤 PYRON?</h2></div>
+ <div class="chips" id="utabs" style="margin-top:10px"></div>
+ <div id="ucard"></div>
+</section>
+
+<section class="spot">
+ <div class="px"><div class="eyebrow">SPOTLIGHT · PYRON W20</div><h2 class="h2">2톤 파렛트도 버튼 하나로.</h2><p class="lead">AC 구동, 무부하 15% 등판, 68dB의 조용한 작동.</p></div>
+ <div class="stage"></div>
+ <div class="five"><div><b>2,000</b><small>정격하중 kg</small></div><div><b>24V</b><small>210Ah</small></div><div><b>1,556</b><small>회전반경 mm</small></div><div><b>4.5</b><small>최고속도 km/h</small></div><div><b>68</b><small>소음 dB(A)</small></div><div><b>520</b><small>자중 kg</small></div></div>
+ <div class="px" style="margin-top:16px"><button class="btn btn-y" onclick="openPD('w20')">W20 가격·구간가 보기</button></div>
+</section>
+
+<section id="spec" style="background:var(--bg)">
+ <div class="px"><div class="eyebrow">TECHNICAL DATA</div><h2 class="h2">제원표</h2><p class="lead">물류장비 표준 항목 기준</p></div>
+ <div class="seg" id="mseg"></div>
+ <div class="sheet" id="sheet"></div>
+</section>
+
+<section id="care">
+ <div class="px"><div class="eyebrow">SELF CHECK</div><h2 class="h2">A/S 부르기 전에 1분 점검</h2></div>
+ <div class="acc">
+  <details><summary><i>H25</i>포크가 올라가지 않아요</summary><div class="a"><ol><li>조작 레버가 '상승' 위치인지 확인</li><li>안 되면 레버를 '하강'에 두고 핸들을 10회 정도 펌핑해 공기 빼기</li><li>정격하중(2,500kg) 초과 여부 확인</li></ol></div></details>
+  <details><summary><i>H25</i>포크가 저절로 내려와요</summary><div class="a"><ol><li>레버가 '중립'인지 확인</li><li>계속되면 유압 씰 마모 가능. 사진과 함께 고객센터 접수</li></ol></div></details>
+  <details><summary><i>W20</i>전원이 안 들어와요</summary><div class="a"><ol><li>비상정지(빨간 버튼)를 돌려서 해제</li><li>키 스위치 ON, 배터리 잔량 확인</li><li>방전이면 충전 후 재시작</li></ol></div></details>
+  <details><summary><i>W20</i>소리만 나고 안 움직여요</summary><div class="a"><ol><li>손잡이를 주행 위치(중간 각도)로 내렸는지 확인</li><li>계속되면 증상 영상을 고객센터로</li></ol></div></details>
+ </div>
+ <div class="px" style="margin-top:28px"><div class="eyebrow">FAQ</div><h2 class="h2">자주 묻는 질문</h2></div>
+ <div class="acc">
+  <details><summary>수동과 전동, 뭘 사야 하나요?</summary><div class="a">운반 횟수가 적고 거리가 짧으면 수동(H25). 무거운 파렛트를 자주·길게 옮기거나 경사가 있으면 전동(W20)을 권합니다.</div></details>
+  <details><summary>포크 외폭 685 vs 550mm?</summary><div class="a">685mm는 1100×1100, 1200×1000 파렛트용 표준 폭, 550mm는 좁은 파렛트·통로용입니다.</div></details>
+  <details><summary>세금계산서 되나요?</summary><div class="a">네. 주문서에 사업자등록번호를 입력하면 전액 발행됩니다.</div></details>
+  <details><summary>하차는 어떻게 하나요?</summary><div class="a">화물로 배송됩니다. W20은 자중 520kg이라 지게차 등 하역 장비가 필요합니다. 어려우면 주문 시 요청해 주세요.</div></details>
+ </div>
+</section>
+
+<section class="pai">
+ <div class="px"><div class="eyebrow">MADE BY</div><div class="pai-mark" id="pai-mark">PAI<span>MOTION</span></div><h2 class="h2" style="margin-top:12px">사고 전에 멈추는 기술을<br>만드는 회사가 만듭니다</h2><p class="lead">PYRON은 Physical AI 산업안전 기업 파이모션의 장비 브랜드입니다.</p></div>
+ <div class="facts">
+  <div><span class="y">2026.07</span><b>고용노동부 장관상</b><span>2026 AI·스마트 산업안전기술 우수사례 챌린지</span></div>
+  <div><span class="y">2026.06</span><b>AJ네트웍스 업무협약</b><span>지게차 안전 솔루션을 산업장비 전반으로 확대</span></div>
+  <div><span class="y">현장</span><b>LG · 에코프로 · 빙그레 · 대한항공 등 적용</b><span>다양한 산업 현장에 AI 안전 솔루션 도입</span></div>
+ </div>
+ <div class="px" style="display:grid;gap:8px"><a class="btn btn-l" style="color:#111" href="#inquiry" onclick="setAI()">PYRON + 지게차 AI 안전 함께 상담</a><a class="btn btn-o" id="safetyLink" href="#" target="_blank" rel="noopener">AI 안전장치 보기 ↗</a></div>
+</section>
+
+<section class="inq" id="inquiry">
+ <div class="px"><div class="eyebrow" style="color:var(--yellow)">BULK QUOTE</div><h2 class="h2">여러 대면 견적이 더 쌉니다</h2><p class="lead">제품과 수량만 알려주세요.</p></div>
+ <div class="qc">
+  <a id="c-tel" href="#"><span class="ic" style="background:var(--blue)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><b>전화 상담</b><small></small></a>
+  <a href="#" onclick="toast('카카오톡 채널 연결 준비 중입니다');return false"><span class="ic" style="background:#FEE500"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg></span><b>카카오톡</b><small>현장 사진으로 추천받기</small></a>
+ </div>
+ <form class="q" onsubmit="submitQ(event)">
+  <h3 style="font-size:19px">견적 요청서</h3>
+  <div class="f"><label>관심 제품 *</label><div class="pick" id="qprod"></div></div>
+  <div class="two"><div class="f"><label>수량 *</label><input type="number" inputmode="numeric" min="1" value="1" id="qqty" required></div><div class="f"><label>사용 현장</label><select><option>마트·유통</option><option>택배·물류</option><option>제조 공장</option><option>기타</option></select></div></div>
+  <div class="f"><label>회사명 / 상호 *</label><input required autocomplete="organization"></div>
+  <div class="two"><div class="f"><label>담당자 *</label><input required autocomplete="name"></div><div class="f"><label>연락처 *</label><input type="tel" inputmode="tel" required autocomplete="tel"></div></div>
+  <div class="f"><label>요청 사항</label><textarea rows="3" placeholder="예) 파렛트 1100×1100, 하루 30회, 경사로 있음"></textarea></div>
+  <label class="agree"><input type="checkbox" required><span>개인정보 수집·이용에 동의합니다. (견적 회신 목적, 1년 보관)</span></label>
+  <button class="btn btn-b" style="height:56px;font-size:16.5px">무료 견적 받기</button>
+ </form>
+</section>
+
+<footer><img src="img/03-3c711bd4.png" alt="PYRON"><p id="f-co"></p><p id="f-addr"></p><p id="f-contact"></p><p style="margin-top:8px">이용약관 · 개인정보처리방침 · 교환/반품 안내</p></footer>
+
+<a class="kfab" href="#" onclick="toast('카카오톡 채널 연결 준비 중입니다');return false" aria-label="카카오톡"><svg width="26" height="26" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg></a>
+<nav class="tabbar" id="tabbar">
+ <a href="#top" class="on" data-t="top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>홈</a>
+ <a href="#lineup" data-t="lineup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>제품</a>
+ <a href="#inquiry" class="cta" data-t="inquiry"><span class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>대량 견적</a>
+ <a href="#spec" data-t="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16M9 3v18"/></svg>제원표</a>
+ <a id="tb-tel" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>전화</a>
+</nav>
+<div class="ov" id="ov" onclick="closeAll()"></div><div class="sh" id="sh"></div><div class="toast" id="toast"></div>
+
+<script>
+/* ===== 회사 정보: 사명 변경 시 여기만 수정 ===== */
+const CFG={coKr:'파이모션',coEn:'PAIMOTION',coLegal:'주식회사 파이모션',tel:'1551-4920',hours:'평일 08:00–17:00',email:'surepoint@surepoint.kr',
+ addr:'경기도 화성시 동탄구 동탄역로 160 KAIST-화성 사이언스허브 103호',ship:'결제 후 영업일 2~3일 내 출고',safetyUrl:'https://surepoint.co.kr/solution'};
+const P=[
+ {id:'w20',power:'전동',cap:2000,series:'W-SERIES · 보행식 전동',name:'PYRON W20',kr:'2.0톤 AC 전동 파렛트트럭',ton:'2.0',img:'img/04-7ad98d6f.jpg',scenes:['img/05-5c438182.jpg','img/06-f6e673d2.jpg'],badge:['BEST','b-y'],list:2790000,tiers:[[1,2490000],[3,2390000],[5,2290000]],ship:'화물 무료배송',warn:'자중 520kg · 현장 하역 장비(지게차 등) 필요',key:[['2,000','정격하중 kg'],['24V','210Ah'],['1,556','회전반경 mm']],copy:'손으로 끌던 2톤 파렛트를 버튼 하나로. AC 구동에 전자식 브레이크, 조용한 68dB.'},
+ {id:'w15',power:'전동',cap:1500,series:'W-SERIES · 보행식 전동',name:'PYRON W15',kr:'1.5톤 AC 전동 파렛트트럭',ton:'1.5',img:'img/04-7ad98d6f.jpg',scenes:[],badge:['출시 예정','b-k'],list:null,tiers:null,ship:'',key:[['1,500','정격하중 kg'],['AC','구동'],['검수 중','제원']],copy:''},
+ {id:'h25',power:'수동',cap:2500,series:'H-SERIES · 수동 유압',name:'PYRON H25',kr:'2.5톤 수동 핸드파렛트트럭',ton:'2.5',img:'img/07-f97050fa.jpg',scenes:['img/08-d7a039fb.jpg'],badge:['STEADY','b-b'],list:329000,tiers:[[1,299000],[3,289000],[6,279000]],ship:'화물 배송 (배송비 착불)',warn:'6대 = 1파렛트 묶음 출고',key:[['2,500','정격하중 kg'],['85–195','포크 높이 mm'],['PU','저소음 휠']],copy:'창고 한 켠에 꼭 있어야 하는 기본기. 저소음 PU 휠과 튼튼한 강철 프레임.'}
+];
+const ROWS=[['1','일반'],['1.1','동력 형식','',{w20:'전동 AC',h25:'수동 유압'}],['1.3','정격 하중','kg',{w20:'2,000',h25:'2,500'}],['1.4','하중 중심','mm',{w20:'600',h25:'—'}],['2','중량'],['2.1','자중 (배터리 포함)','kg',{w20:'520',h25:'—'}],
+ ['3','치수'],['3.1','포크 최저/최고','mm',{w20:'85/285',h25:'85/195'}],['3.3','핸들 높이','mm',{w20:'825/1,278',h25:'—'}],['3.4','포크 길이','mm',{w20:'1,150',h25:'1,220'}],['3.5','포크 외폭','mm',{w20:'550/685',h25:'685'}],['3.6','전장','mm',{w20:'1,742',h25:'—'}],['3.7','전폭','mm',{w20:'700',h25:'—'}],['3.9','최소 회전반경','mm',{w20:'1,556',h25:'—'}],['3.10','통로폭 (1000×1200)','mm',{w20:'1,944',h25:'—'}],
+ ['4','바퀴'],['4.1','바퀴 재질','',{w20:'PU',h25:'PU'}],['4.2','구동/조향륜','mm',{w20:'Φ230×70',h25:'Φ180×70'}],['4.3','하중륜','mm',{w20:'Φ80×70',h25:'Φ80×70'}],
+ ['5','성능'],['5.1','주행속도 부하/무부하','km/h',{w20:'4.2/4.5',h25:'—'}],['5.2','인상속도 부하/무부하','mm/s',{w20:'21/27',h25:'—'}],['5.4','등판능력 부하/무부하','%',{w20:'8/15',h25:'—'}],
+ ['6','구동·전기'],['6.1','주행/인상 모터','kW',{w20:'1.3/0.8',h25:'—'}],['6.2','배터리','V/Ah',{w20:'24/210',h25:'—'}],['6.4','제동','',{w20:'전자식',h25:'—'}],['6.6','소음','dB(A)',{w20:'68',h25:'—'}]];
+const USES=[
+ {k:'mart',t:'마트·유통',img:'img/06-f6e673d2.jpg',h:'좁은 백룸, 매일 들어오는 음료 파렛트',p:['진열 전에 입고를 끝내야 함','좁은 통로, 매끄러운 바닥','새벽 작업이라 소음이 신경 쓰임'],rec:'w20',why:'회전반경 1,556mm, 68dB 저소음.'},
+ {k:'parcel',t:'택배·물류',img:'img/08-d7a039fb.jpg',h:'상하차장에서 하루 수십 번',p:['트럭 앞 짧은 거리를 자주 이동','여러 대를 동시에 굴리는 현장','고장 시 바로 대체할 장비 필요'],rec:'h25',why:'6대 1파렛트 구간가로 넉넉하게.'},
+ {k:'factory',t:'제조 공장',img:'img/05-5c438182.jpg',h:'부품 파렛트를 공정 사이로',p:['무거운 금속 부품 반복 운반','작업자 근골격계 부담','긴 동선과 경사로'],rec:'w20',why:'2톤 정격, 무부하 15% 등판.'}];
+const won=n=>n.toLocaleString('ko-KR')+'원', exVat=n=>Math.round(n/1.1), byId=id=>P.find(p=>p.id===id);
+const telHref='tel:'+CFG.tel.replace(/-/g,'');
+document.getElementById('h-by').textContent=CFG.coEn;document.getElementById('t-ship').textContent=CFG.ship;document.getElementById('t-co').textContent=CFG.coKr+'가 만드는 장비';
+document.querySelector('#c-tel small').textContent=CFG.tel+' · '+CFG.hours;document.getElementById('c-tel').href=telHref;document.getElementById('tb-tel').href=telHref;
+document.getElementById('f-co').innerHTML=`<b>${CFG.coLegal} (${CFG.coEn})</b> · 산업장비 브랜드 PYRON`;document.getElementById('f-addr').textContent=CFG.addr;document.getElementById('f-contact').textContent=`T. ${CFG.tel} · ${CFG.email}`;
+document.getElementById('safetyLink').href=CFG.safetyUrl;
+
+function card(p){const t=p.tiers;return `<div class="pc"><div class="ph" onclick="openPD('${p.id}')"><span class="badge ${p.badge[1]}">${p.badge[0]}</span><span class="ton">${p.ton}t</span><img src="${p.img}" alt="${p.name}" loading="lazy"></div><div class="bd"><div class="se">${p.series}</div><h3>${p.name}</h3><div class="kr">${p.kr}</div><div class="ks">${p.key.map(k=>`<div><b>${k[0]}</b><small>${k[1]}</small></div>`).join('')}</div>
+ ${t?`<div class="ship">● ${p.ship}</div><div class="pr"><span class="was">${won(p.list)}</span><div><b>${won(t[0][1])}</b> <span class="vat">VAT 포함 · 별도 ${won(exVat(t[0][1]))}</span></div></div><div class="tierrow">${t.map(x=>`<span>${x[0]}대${x[0]>1?'+':''}<b>${(x[1]/10000).toLocaleString()}만</b></span>`).join('')}</div>`:'<span class="ask">출시 예정 · 입고 알림 신청</span>'}
+ <div class="acts">${t?`<button class="btn btn-b" onclick="openPD('${p.id}')">바로 구매</button>`:`<button class="btn btn-b" onclick="quoteFor('${p.id}')">알림 신청</button>`}<button class="btn btn-l" onclick="quoteFor('${p.id}')">대량 견적</button></div></div></div>`;}
+function renderList(c){document.getElementById('plist').innerHTML=P.filter(p=>c==='all'||p.power===c||(c==='2000'&&p.cap>=2000)).map(card).join('');}
+document.querySelectorAll('#cats button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#cats button').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderList(b.dataset.c);});
+renderList('all');
+
+document.getElementById('utabs').innerHTML=USES.map((u,i)=>`<button class="${i?'':'on'}" data-k="${u.k}">${u.t}</button>`).join('');
+function renderUse(k){const u=USES.find(x=>x.k===k),p=byId(u.rec);document.querySelectorAll('#utabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+ document.getElementById('ucard').innerHTML=`<div class="ucard"><img src="${u.img}" alt="${u.t}"><div class="tx"><h3>${u.h}</h3><div class="pains">${u.p.map((x,i)=>`<div><i>${i+1}</i>${x}</div>`).join('')}</div><div class="rec"><img src="${p.img}"><div><span>추천 장비</span><b>${p.name}</b><span>${u.why}</span></div></div><button class="btn btn-b" onclick="openPD('${p.id}')">${p.name} 보기</button></div></div>`;}
+document.querySelectorAll('#utabs button').forEach(b=>b.onclick=()=>renderUse(b.dataset.k));renderUse('mart');
+
+let model='w20',specOpen=false;
+function specRows(id,all){let out='',n=0;for(const r of ROWS){if(r.length===2){if(!all&&n>=10)break;out+=`<div class="sgrp">${r[0]}. ${r[1]}</div>`;continue;}if(!all&&n>=10)break;n++;out+=`<div class="srow"><span class="no">${r[0]}</span><span>${r[1]}</span><span class="v">${r[3][id]??'—'}${r[2]?`<small>${r[2]}</small>`:''}</span></div>`;}return out;}
+function renderSpec(){document.getElementById('mseg').innerHTML=['w20','h25'].map(i=>`<button class="${i===model?'on':''}" onclick="model='${i}';renderSpec()">${byId(i).name.replace('PYRON ','')}</button>`).join('');
+ document.getElementById('sheet').innerHTML=`<div class="top"><img src="img/02-a05ef86f.png"><span>TECHNICAL DATA · ${byId(model).name}</span></div>${specRows(model,specOpen)}<button class="more" onclick="specOpen=!specOpen;renderSpec()">${specOpen?'접기 ▲':'전체 제원 보기 ▼'}</button>`;}
+renderSpec();
+
+let cur=null,qty=1;
+const unitFor=(p,q)=>{let u=p.tiers[0][1];p.tiers.forEach(t=>{if(q>=t[0])u=t[1];});return u;};
+function openPD(id){cur=byId(id);qty=1;if(!cur.tiers){quoteFor(id);return;}renderPD();openSheet();document.querySelector('#sh .body').scrollTop=0;}
+function renderPD(){const p=cur,u=unitFor(p,qty),imgs=[p.img,...p.scenes],keep=document.querySelector('#sh .body')?.scrollTop||0;const nx=p.tiers.find(t=>t[0]>qty);
+ const notice=[['품명/모델',`${p.kr} / ${p.name}`],['제조국','중국 (OEM 생산)'],['수입·판매원',CFG.coLegal],['배송',p.ship],['A/S 문의',CFG.tel]];
+ document.getElementById('sh').innerHTML=`<div class="grab"></div><button class="x" onclick="closeAll()">×</button><div class="body">
+ <div class="gal" id="gal">${imgs.map((s,i)=>`<div><img class="${i?'scene':''}" src="${s}"></div>`).join('')}</div><div class="galdots" id="gd">${imgs.map((_,i)=>`<span class="${i?'':'on'}"></span>`).join('')}</div>
+ <div class="pd-h"><div class="eyebrow">${p.series}</div><h2>${p.name}</h2><div class="krn">${p.kr}</div><p>${p.copy}</p><div class="ks">${p.key.map(k=>`<div><b>${k[0]}</b><small>${k[1]}</small></div>`).join('')}</div></div>
+ <div class="opt"><h5>수량 구간가 <small>대당 · VAT 포함</small></h5><div class="tiers">${p.tiers.map((t,i)=>{const n2=p.tiers[i+1];const on=qty>=t[0]&&(!n2||qty<n2[0]);return `<div class="${on?'on':''}"><small>${t[0]}대${n2?'~'+(n2[0]-1):'+'}</small><b>${won(t[1])}</b></div>`}).join('')}</div>
+  <div class="qtyrow"><div class="qty"><button onclick="qty=Math.max(1,qty-1);renderPD()">−</button><span>${qty}</span><button onclick="qty++;renderPD()">+</button></div><span class="hint">${nx?`${nx[0]-qty}대 더 담으면 대당 ${won(u-nx[1])} ↓`:'최대 구간가 적용 중'}</span></div>
+  <div class="ship" style="margin-top:12px">● ${p.ship} · ${CFG.ship}</div>${p.warn?`<div class="warn">⚠ ${p.warn}</div>`:''}
+  <button class="btn btn-l" style="margin-top:10px;height:48px;font-size:14.5px" onclick="quoteFor('${p.id}')">${p.tiers[2][0]}대 이상 · 대량 견적 받기</button></div>
+ <div class="opt" style="padding-left:0;padding-right:0"><h5 style="padding:0 20px">제원표</h5><div class="sheet">${specRows(p.id,true)}</div></div>
+ <div class="opt"><h5>상품 정보 제공 고시</h5><div class="notice">${notice.map(x=>`<div><span>${x[0]}</span><span>${x[1]}</span></div>`).join('')}</div></div></div>
+ <div class="foot"><div class="buybar"><div class="tot"><small>${qty}대 · VAT 포함</small><b>${won(u*qty)}</b></div><button class="btn btn-l" onclick="addCart()">담기</button><button class="btn btn-b" onclick="buyNow()">바로 구매</button></div></div>`;
+ const b=document.querySelector('#sh .body');if(b)b.scrollTop=keep;
+ const g=document.getElementById('gal');g.addEventListener('scroll',()=>{const i=Math.round(g.scrollLeft/g.offsetWidth);document.querySelectorAll('#gd span').forEach((d,j)=>d.classList.toggle('on',i===j));},{passive:true});}
+function openSheet(){document.getElementById('sh').classList.add('on');document.getElementById('ov').classList.add('on');document.body.style.overflow='hidden';}
+let cart=[];
+function updCart(){document.getElementById('cartn').textContent=cart.reduce((a,c)=>a+c.qty,0);}
+function pushLine(p,q){const ex=cart.find(c=>c.id===p.id);if(ex)ex.qty+=q;else cart.push({id:p.id,qty:q});updCart();}
+const lineTotal=c=>unitFor(byId(c.id),c.qty)*c.qty;
+function addCart(){pushLine(cur,qty);toast(`${cur.name} ${qty}대 담았어요`);}
+function buyNow(){pushLine(cur,qty);checkout();}
+function openCart(){const t=cart.reduce((a,c)=>a+lineTotal(c),0);
+ document.getElementById('sh').innerHTML=`<div class="grab"></div><button class="x" onclick="closeAll()">×</button><div class="body"><h3 style="padding:4px 20px 10px;font-size:20px">장바구니</h3>${cart.length?cart.map((c,i)=>{const p=byId(c.id);return `<div class="ci"><img src="${p.img}"><div><b>${p.name}</b><small>${c.qty}대 · 대당 ${won(unitFor(p,c.qty))}</small><small style="color:#1E1E1E;font-weight:800;font-size:14px">${won(lineTotal(c))}</small></div><button class="rm" onclick="cart.splice(${i},1);updCart();openCart()">삭제</button></div>`}).join(''):'<p style="text-align:center;color:#6b7385;padding:60px 0">장바구니가 비어 있어요</p>'}</div>
+ <div class="foot"><div class="buybar" style="grid-template-columns:auto 1fr"><div class="tot"><small>합계 · VAT 포함</small><b>${won(t)}</b></div><button class="btn btn-b" ${cart.length?'':'disabled style="opacity:.4"'} onclick="checkout()">주문하기</button></div></div>`;openSheet();}
+function checkout(){const t=cart.reduce((a,c)=>a+lineTotal(c),0);
+ document.getElementById('sh').innerHTML=`<div class="grab"></div><button class="x" onclick="closeAll()">×</button><form class="body" id="ckf" onsubmit="orderDone(event)" style="display:block"><h3 style="padding:4px 20px 0;font-size:20px">주문서</h3><div class="sumbox">${cart.map(c=>`<div><span>${byId(c.id).name} × ${c.qty}</span><b>${won(lineTotal(c))}</b></div>`).join('')}</div>
+ <div style="padding:0 20px 20px"><div class="f"><label>회사명 / 상호 *</label><input required></div><div class="f"><label>사업자등록번호</label><input inputmode="numeric" placeholder="000-00-00000"></div><div class="two"><div class="f"><label>담당자 *</label><input required></div><div class="f"><label>연락처 *</label><input type="tel" inputmode="tel" required></div></div><div class="f"><label>배송지 *</label><input required placeholder="현장 주소"></div>
+ <div class="f"><label>하차 방법</label><div class="pick"><label><input type="radio" name="un" checked><span>현장 지게차로 하차</span></label><label><input type="radio" name="un"><span>하차 지원 요청</span></label></div></div>
+ <div class="f"><label>결제 방법</label><div class="pick"><label><input type="radio" name="pay" checked><span>무통장입금</span></label><label><input type="radio" name="pay"><span>카드</span></label></div></div>
+ <label class="agree"><input type="checkbox" required><span>주문 내용과 교환·반품 안내를 확인했습니다.</span></label></div></form>
+ <div class="foot"><button class="btn btn-b" style="height:54px" onclick="const f=document.getElementById('ckf');f.requestSubmit?f.requestSubmit():(f.reportValidity()&&f.dispatchEvent(new Event('submit',{cancelable:true})))">${won(t)} 주문하기</button></div>`;openSheet();}
+function orderDone(e){e.preventDefault();cart=[];updCart();document.getElementById('sh').innerHTML=`<div class="grab"></div><div class="body"><div class="done"><div class="big">✓</div><h3>주문이 접수되었습니다</h3><p style="color:#6b7385;margin:8px 0 24px">담당자가 결제와 출고 일정을 안내드립니다.<br>${CFG.tel}</p><button class="btn btn-b" onclick="closeAll()">확인</button></div></div>`;}
+document.getElementById('qprod').innerHTML=P.map(p=>`<label><input type="checkbox" value="${p.id}"><span>${p.name.replace('PYRON ','')}</span></label>`).join('')+'<label><input type="checkbox" value="ai"><span>지게차 AI 안전장치</span></label>';
+function quoteFor(id){closeAll();document.querySelectorAll('#qprod input').forEach(i=>i.checked=i.value===id);if(cur&&cur.id===id)document.getElementById('qqty').value=qty;document.getElementById('inquiry').scrollIntoView();}
+function setAI(){document.querySelectorAll('#qprod input').forEach(i=>i.checked=i.value==='ai');}
+function submitQ(e){e.preventDefault();toast('견적 요청 완료! 곧 연락드릴게요');e.target.reset();}
+function closeAll(){['sh','ov'].forEach(i=>document.getElementById(i).classList.remove('on'));document.body.style.overflow='';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2200);}
+const secs=['top','lineup','spec','inquiry'].map(id=>document.getElementById(id));
+addEventListener('scroll',()=>{let a='top';for(const s of secs){if(s.getBoundingClientRect().top<160)a=s.id;}document.querySelectorAll('#tabbar a[data-t]').forEach(x=>x.classList.toggle('on',x.dataset.t===a&&!x.classList.contains('cta')));},{passive:true});
+let sy=null;document.getElementById('sh').addEventListener('touchstart',e=>{if(e.target.closest('.grab'))sy=e.touches[0].clientY;},{passive:true});
+document.getElementById('sh').addEventListener('touchend',e=>{if(sy!==null&&e.changedTouches[0].clientY-sy>80)closeAll();sy=null;});
+</script>
+</body>
+</html>
