@@ -2,6 +2,40 @@
   "updatedAt": "2026-10-16",
   "projects": [
     {
+      "id": "p-mva8r36a",
+      "region": "US",
+      "brand": "POURSTORE",
+      "name": "아마존 US FBA 스티커프라이머 180개 (예정)",
+      "direction": "수출",
+      "route": "한국 → 미국 Amazon FBA (센터 미확정)",
+      "status": "준비",
+      "image": "",
+      "start": "",
+      "end": "",
+      "info": {
+        "선적항 (POL)": "",
+        "도착항 (POD)": "",
+        "품목": "스티커프라이머",
+        "HS 코드": "",
+        "인보이스 금액": "",
+        "수량": "180개",
+        "개당 중량": "",
+        "총 중량": "",
+        "치수": "",
+        "총 용적": "",
+        "포장 형태": "",
+        "운송 방식": "",
+        "화물 준비일": "",
+        "인코텀즈": ""
+      },
+      "pickup": "",
+      "delivery": {},
+      "contacts": [],
+      "checks": [],
+      "comments": [],
+      "updatedAt": 1792111225823
+    },
+    {
       "id": "p-pour-cn-2610",
       "region": "CN",
       "brand": "POUR",
@@ -267,7 +301,7 @@
       "contacts": [],
       "checks": [],
       "comments": [],
-      "updatedAt": 1792111224214
+      "updatedAt": 1792111225823
     },
     {
       "id": "p-mva7d08j",
