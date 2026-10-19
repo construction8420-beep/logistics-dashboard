@@ -213,7 +213,7 @@ label.f textarea{min-height:60px;resize:vertical}
   <header class="top">
     <div>
       <h1>해외 물류 · 사업 대시보드</h1>
-      <div class="sub" id="upd"></div>
+      <div class="sub" id="upd"></div><div class="sub" id="import-sync" role="status">접수된 수입 물량 조회 중…</div>
     </div>
     <div class="actions">
       <button class="sync" id="sync" title="깃허브 저장 상태"></button>
@@ -272,7 +272,7 @@ label.f textarea{min-height:60px;resize:vertical}
 (function(){
 const LS='wbs-dashboard-v1', TH='wbs-dashboard-theme';
 const REG={JP:'일본',CN:'중국',SG:'싱가포르',VN:'베트남',US:'미국',ETC:'기타'};
-const STATUS=['준비','견적 요청','진행 중','선적 완료','완료','보류'];
+const STATUS=['접수','준비','견적 요청','진행 중','선적 완료','완료','보류'];
 const INFO_KEYS=['선적항 (POL)','도착항 (POD)','품목','HS 코드','인보이스 금액','수량','개당 중량','총 중량','치수','총 용적','포장 형태','운송 방식','화물 준비일','인코텀즈'];
 const TL_START=new Date(2026,7,1), TL_END=new Date(2027,3,1);
 const $=s=>document.querySelector(s);
@@ -444,7 +444,7 @@ const isMiss=v=>!v||/미정|확인 필요|첨부 예정/.test(v);
 
 function filtered(){
   const q=f.q.trim().toLowerCase();
-  return data.projects.filter(p=>(f.region==='ALL'||p.region===f.region)&&(f.dir==='ALL'||p.direction===f.dir)&&(f.brand==='ALL'||bname(p)===f.brand)&&
+  return displayProjects().filter(p=>(f.region==='ALL'||p.region===f.region)&&(f.dir==='ALL'||p.direction===f.dir)&&(f.brand==='ALL'||bname(p)===f.brand)&&
     (!q||[p.brand,p.name,p.route,mgr(p).manager,...Object.values(p.info||{})].join(' ').toLowerCase().includes(q))).sort(byUrg);
 }
 const bname=p=>(p.brand||'').trim()||'브랜드 미입력';
@@ -467,7 +467,7 @@ function render(){
   if(openId) openDrawer(openId,true);
 }
 function renderKpi(){
-  const P=data.projects, act=P.filter(p=>!['완료','보류'].includes(p.status));
+  const P=displayProjects(), act=P.filter(p=>!['완료','보류'].includes(p.status));
   const open=P.reduce((n,p)=>n+(p.checks||[]).filter(c=>!c.done).length,0);
   const miss=P.reduce((n,p)=>n+Object.values(p.info||{}).filter(isMiss).length+(p.image?0:1),0);
   const k=[['진행 중 프로젝트',act.length,'건'],['수출',P.filter(p=>p.direction==='수출').length,'건'],['수입',P.filter(p=>p.direction==='수입').length,'건'],['남은 체크리스트',open,'개'],['미정·누락 정보',miss,'개',miss>0]];
@@ -476,7 +476,7 @@ function renderKpi(){
 function renderFilters(){
   const regs=['ALL',...Object.keys(REG)];
   $('#fRegion').innerHTML=regs.map(r=>`<button class="chip${f.region===r?' on':''}" data-r="${r}">${r==='ALL'?'전체 지역':REG[r]}</button>`).join('');
-  const brands=[...new Set(data.projects.map(bname))].sort((a,b)=>a.localeCompare(b,'ko'));
+  const brands=[...new Set(displayProjects().map(bname))].sort((a,b)=>a.localeCompare(b,'ko'));
   if(f.brand!=='ALL'&&!brands.includes(f.brand))f.brand='ALL';
   $('#fBrand').innerHTML=['ALL',...brands].map(b=>`<button class="chip${f.brand===b?' on':''}" data-br="${esc(b)}">${b==='ALL'?'전체 브랜드':esc(b)}</button>`).join('');
   $('#fDir').innerHTML=['ALL','수출','수입'].map(d=>`<button class="chip${f.dir===d?' on':''}" data-d="${d}">${d==='ALL'?'수출+수입':d}</button>`).join('');
@@ -536,6 +536,7 @@ function renderWbs(){
       ${lc?`<span class="n ph" style="cursor:pointer">${esc(lc.text)}</span>`:''}</span></div>`}).join('')}</div>`).join('');
 }
 function openDrawer(id,silent){
+  const linked=importProjects.find(p=>p.id===id);if(linked){openImportDrawer(linked,silent);return;}
   const p=data.projects.find(x=>x.id===id); if(!p){closeDrawer();return}
   openId=id; const i=p.info||{};
   const kv=INFO_KEYS.filter(k=>k in i).concat(Object.keys(i).filter(k=>!INFO_KEYS.includes(k)));
@@ -639,7 +640,30 @@ $('#bImport').onclick=()=>$('#fImport').click();
 $('#fImport').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.projects))throw 0;data=merge(data,d);save();toast('불러와서 합쳤습니다')}catch(_){toast('올바른 data.json 파일이 아닙니다')}};r.readAsText(fl);e.target.value=''};
 const th=ls.get(TH); if(th)document.documentElement.dataset.theme=th;
 $('#bTheme').onclick=()=>{const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;const n=dark?'light':'dark';document.documentElement.dataset.theme=n;ls.set(TH,n)};
-load();
+let importProjects=[];
+function displayProjects(){return [...data.projects,...importProjects];}
+function openImportDrawer(p,silent){
+ openId=p.id;
+ $('#drawer').innerHTML=`<div class="dh"><div><div class="brand">${esc(p.brand)}</div><div class="pname">${esc(p.name)}</div>${badges(p)}</div><button class="btn sm ghost x" id="dClose" aria-label="닫기">✕</button></div><div class="db"><p class="hint">수입의뢰 접수 후 자동으로 표시됩니다. 접수는 운송 확정을 뜻하지 않습니다. 진행 변경은 수입 핸들링에서 반영합니다.</p><div class="blk"><h4>수입 의뢰 정보</h4><table class="kv">${Object.entries(p.info).map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v||'미확정')}</td></tr>`).join('')}</table></div></div>`;
+ if(!silent){$('#drawer').classList.add('on');$('#ov').classList.add('on');$('#drawer').setAttribute('aria-hidden','false');}
+}
+async function refreshImports(){
+ try{
+  const response=await fetch('https://overseas-business.vercel.app/api/logistics-feed',{cache:'no-store',signal:AbortSignal.timeout(15000)});
+  if(!response.ok)throw Error('feed');const feed=await response.json();
+  if(feed.version!==1||!Array.isArray(feed.projects))throw Error('format');
+  importProjects=feed.projects.map(p=>{
+   if(typeof p.id!=='string'||!p.id.startsWith('import-')||typeof p.name!=='string'||!['접수','진행 중','완료'].includes(p.status))throw Error('format');
+   const value=(key,unit)=>typeof p[key]==='number'&&Number.isFinite(p[key])&&p[key]>0?p[key]+unit:'';
+   return {id:p.id,name:p.name,brand:p.brand||'',region:'CN',direction:'수입',status:p.status,route:[p.origin,p.destination].filter(Boolean).join(' → '),start:'',end:'',info:{'품목':p.name,'의뢰 담당':p.requester||'','수입 진행 단계':p.stage||'','출발 지역':p.origin||'','도착 지역':p.destination||'','수량':value('quantity','개'),'카톤':value('cartons','카톤'),'팔레트':value('pallets','팔레트'),'총 중량':value('weightKg','kg'),'총 용적':value('volumeCbm','CBM')},checks:[],comments:[],contacts:[]};
+  });
+  $('#import-sync').textContent='수입 핸들링 자동연동 · '+importProjects.length+'건 · '+new Date().toLocaleTimeString('ko-KR')+' 확인';
+ }catch{importProjects=[];$('#import-sync').textContent='접수된 수입 물량을 조회하지 못했습니다. 잠시 후 자동 재시도합니다.';}
+ render();
+}
+
+load().then(refreshImports);
+setInterval(()=>{if(!document.hidden)refreshImports();},60000);
 })();
 </script>
 </body>
